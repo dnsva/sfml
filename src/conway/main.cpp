@@ -11,23 +11,6 @@ using std::vector;
 //./build/bin/main
 
 /* Rules - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules */
-/*void setup(vector<vector<bool>> *gen_a, int &c, int &r) {
-
-    //
-
-
-    //temp setup with random trues 
-
-    (*gen_a)[3][3] = true;
-    (*gen_a)[3][4] = true;
-    (*gen_a)[3][5] = true;
-    (*gen_a)[4][3] = true;
-    (*gen_a)[4][4] = true;
-    (*gen_a)[4][5] = true;
-    (*gen_a)[5][3] = true;
-    (*gen_a)[5][4] = true;
-    (*gen_a)[5][5] = true;
-}*/
 
 void draw_grid(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int r) {
     //set size of cells basd on window size
@@ -51,7 +34,7 @@ void draw_grid(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int
     }
 }
 
-void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int r) {
+void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int r, int & population) {
     //depending on where user clicks, set the index of gen_a to true. if double click, set to false
     //if user presses enter, start the game
 
@@ -79,6 +62,11 @@ void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c,
                     int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
                     int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
                     if (i >= 0 && i < c && j >= 0 && j < r) {
+                        if(gen_a[i][j]){
+                            population--;
+                        }else{
+                            population++;
+                        }
                         gen_a[i][j] = !gen_a[i][j];
                     }
             }
@@ -92,6 +80,11 @@ void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c,
                     int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
                     int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
                     if (i >= 0 && i < c && j >= 0 && j < r) {
+                        if(gen_a[i][j]){
+                            population--;
+                        }else{
+                            population++;
+                        }
                         gen_a[i][j] = !gen_a[i][j];
                     }
                 }
@@ -114,9 +107,6 @@ void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c,
         window.display();
 
     }
-
-    
-
 }
 
 void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<bool>> &gen_b, int& c, int& r) {
@@ -243,7 +233,7 @@ void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, 
 
 }
 
-void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& generation, int c, int r) {
+void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& generation, int& population, int c, int r) {
     // Update the grid
     for (int i = 0; i < c; i++) {
         for (int j = 0; j < r; j++) {
@@ -280,14 +270,18 @@ void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& g
             if (gen_a[i][j]) {
                 if (live_neighbours < 2 || live_neighbours > 3) {
                     gen_b[i][j] = false;  // Cell dies due to underpopulation or overpopulation
+                    population--;
                 } else {
                     gen_b[i][j] = true;   // Cell survives
+                    //population++;
                 }
             } else {
                 if (live_neighbours == 3) {
                     gen_b[i][j] = true;   // Cell becomes alive due to reproduction
+                    population++;
                 } else {
                     gen_b[i][j] = false;  // Cell remains dead
+                    //population--;
                 }
             }
         }
@@ -300,7 +294,6 @@ void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& g
     generation++;
 }
 
-
 int main() {
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
@@ -308,17 +301,22 @@ int main() {
     int columns = 100;
     int rows = 100;
     int generation = 1;
+    int population = 0;
 
     sf::Clock clock;
 
     sf::Font font;
     font.loadFromFile("src/conway/arial.ttf");
 
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Blue);
-    text.setPosition(10.0f, 10.0f);
+    sf::Text text_generation, text_population;
+    text_generation.setFont(font);
+    text_generation.setCharacterSize(24);
+    text_generation.setFillColor(sf::Color::Blue);
+    text_generation.setPosition(10.0f, 10.0f);
+    text_population.setFont(font);
+    text_population.setCharacterSize(24);
+    text_population.setFillColor(sf::Color::Blue);
+    text_population.setPosition(10.0f, 40.0f);
 
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
@@ -328,7 +326,7 @@ int main() {
   //  vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
     vector<vector<bool>> gen_a, gen_b;
     setup_rows_and_cols(window, gen_a, gen_b, columns, rows);
-    setup_squares(window, gen_a, columns, rows);
+    setup_squares(window, gen_a, columns, rows, population);
     
   
     // Main loop that continues until the window is closed
@@ -346,8 +344,10 @@ int main() {
         
        draw_grid(window, gen_a, columns, rows);
         
-        text.setString("Generation: "+std::to_string(generation));
-        window.draw(text);
+        text_generation.setString("Generation: "+std::to_string(generation));
+        text_population.setString("Population: "+std::to_string(population));
+        window.draw(text_generation);
+        window.draw(text_population);
 
         // Display the contents of the window
         window.display();
@@ -356,7 +356,7 @@ int main() {
         sf::Time elapsed = clock.getElapsedTime();
         if(elapsed.asSeconds() > 1){
             clock.restart();
-            updateGrid(gen_a, gen_b, generation, columns, rows);
+            updateGrid(gen_a, gen_b, generation, population, columns, rows);
 
         }
 

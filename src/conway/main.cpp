@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <vector>
 
 using std::vector;
@@ -9,14 +10,7 @@ using std::vector;
 //Build:
 //./build/bin/main
 
-/* Rules - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules
-
-Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-Any live cell with two or three live neighbours lives on to the next generation.
-Any live cell with more than three live neighbours dies, as if by overpopulation.
-Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-
-*/
+/* Rules - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules */
 void setup(vector<vector<bool>> *gen_a){ 
 
     //temp setup with random trues 
@@ -99,6 +93,16 @@ int main() {
 
     sf::Clock clock;
 
+    sf::Font font;
+    font.loadFromFile("src/conway/arial.ttf");
+
+    sf::Text text;
+    text.setFont(font);
+    text.setString("Hello world");
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Blue);
+    text.setPosition(10.0f, 10.0f);
+
     vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
     vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
 
@@ -122,6 +126,7 @@ int main() {
         // Clear the window
         window.clear();
 
+        /*
        //set size of cells basd on window size
         sf::Vector2f windowSize = window.getView().getSize();
         sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
@@ -132,32 +137,29 @@ int main() {
         for(int i=0;i<columns;i++){
             for(int j=0;j<rows;j++){
                 grid[i][j].setSize(cellSize);
-               // grid[i][j].setOutlineColor(sf::Color::Blue);
-               // grid[i][j].setOutlineThickness(5.0f);
-
                 if(gen_a[i][j]){
                     grid[i][j].setFillColor(sf::Color::White);
                 }else{
                     grid[i][j].setFillColor(sf::Color::Black);
                 }
-               
-
                 grid[i][j].setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
-
                 window.draw(grid[i][j]);
-
             }
         }
+        */
+
+       window.draw(text);
 
         // Display the contents of the window
         window.display();
 
+/*
         sf::Time elapsed = clock.getElapsedTime();
         if(elapsed.asSeconds() > 1){
             clock.restart();
             updateGrid(gen_a, gen_b, generation, columns, rows);
 
-        }
+        }*/
 
     }
 

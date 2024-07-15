@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
+
+using std::vector;
 
 //Compile:
 //cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release
@@ -14,6 +17,78 @@ Any live cell with more than three live neighbours dies, as if by overpopulation
 Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
 */
+void setup(vector<vector<bool>> *gen_a){ 
+
+    //temp setup with random trues 
+
+    (*gen_a)[3][3] = true;
+    (*gen_a)[3][4] = true;
+    (*gen_a)[3][5] = true;
+    (*gen_a)[4][3] = true;
+    (*gen_a)[4][4] = true;
+    (*gen_a)[4][5] = true;
+    (*gen_a)[5][3] = true;
+    (*gen_a)[5][4] = true;
+    (*gen_a)[5][5] = true;
+}
+
+void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& generation, int c, int r) {
+    // Update the grid
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < r; j++) {
+            // Check the rules
+            int live_neighbours = 0;
+
+            // Count live neighbors
+            if (i - 1 >= 0 && j - 1 >= 0 && gen_a[i - 1][j - 1]) {
+                live_neighbours++;
+            }
+            if (i - 1 >= 0 && gen_a[i - 1][j]) {
+                live_neighbours++;
+            }
+            if (i - 1 >= 0 && j + 1 < r && gen_a[i - 1][j + 1]) {
+                live_neighbours++;
+            }
+            if (j - 1 >= 0 && gen_a[i][j - 1]) {
+                live_neighbours++;
+            }
+            if (j + 1 < r && gen_a[i][j + 1]) {
+                live_neighbours++;
+            }
+            if (i + 1 < c && j - 1 >= 0 && gen_a[i + 1][j - 1]) {
+                live_neighbours++;
+            }
+            if (i + 1 < c && gen_a[i + 1][j]) {
+                live_neighbours++;
+            }
+            if (i + 1 < c && j + 1 < r && gen_a[i + 1][j + 1]) {
+                live_neighbours++;
+            }
+
+            // Apply rules to update gen_b
+            if (gen_a[i][j]) {
+                if (live_neighbours < 2 || live_neighbours > 3) {
+                    gen_b[i][j] = false;  // Cell dies due to underpopulation or overpopulation
+                } else {
+                    gen_b[i][j] = true;   // Cell survives
+                }
+            } else {
+                if (live_neighbours == 3) {
+                    gen_b[i][j] = true;   // Cell becomes alive due to reproduction
+                } else {
+                    gen_b[i][j] = false;  // Cell remains dead
+                }
+            }
+        }
+    }
+
+    //update gen_a with gen_b
+    gen_a = gen_b;
+
+    // Increment the generation counter
+    generation++;
+}
+
 
 int main() {
     // Create the main window
@@ -21,11 +96,20 @@ int main() {
 
     int columns = 8;
     int rows = 8;
+
+    sf::Clock clock;
+
+    vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
+    vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
+
+    setup(&gen_a);
+
+    int generation = 1;
+
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
     sf::RectangleShape grid[columns][rows];
 
   
-
     // Main loop that continues until the window is closed
     while (window.isOpen()) {
         // Handle events
@@ -43,20 +127,20 @@ int main() {
         sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
 
 
+        //PRINT GEN_A 
+
         for(int i=0;i<columns;i++){
             for(int j=0;j<rows;j++){
                 grid[i][j].setSize(cellSize);
                // grid[i][j].setOutlineColor(sf::Color::Blue);
                // grid[i][j].setOutlineThickness(5.0f);
 
-                // Calculate color based on indices (i, j)
-                // Clamp values to 0-255 range
-                sf::Uint8 red = static_cast<sf::Uint8>(std::min(255, (i + j) * 10));
-                sf::Uint8 green = static_cast<sf::Uint8>(std::min(255, (i + j) * 10));
-                sf::Uint8 blue = static_cast<sf::Uint8>(std::min(255, (i + j) * 10));
-
-                // Set color
-                grid[i][j].setFillColor(sf::Color(red, green, blue));
+                if(gen_a[i][j]){
+                    grid[i][j].setFillColor(sf::Color::White);
+                }else{
+                    grid[i][j].setFillColor(sf::Color::Black);
+                }
+               
 
                 grid[i][j].setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
 
@@ -65,10 +149,16 @@ int main() {
             }
         }
 
-
-
         // Display the contents of the window
         window.display();
+
+        sf::Time elapsed = clock.getElapsedTime();
+        if(elapsed.asSeconds() > 1){
+            clock.restart();
+            updateGrid(gen_a, gen_b, generation, columns, rows);
+
+        }
+
     }
 
     return 0;

@@ -11,7 +11,10 @@ using std::vector;
 //./build/bin/main
 
 /* Rules - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules */
-void setup(vector<vector<bool>> *gen_a){ 
+/*void setup(vector<vector<bool>> *gen_a, int &c, int &r) {
+
+    //
+
 
     //temp setup with random trues 
 
@@ -24,6 +27,104 @@ void setup(vector<vector<bool>> *gen_a){
     (*gen_a)[5][3] = true;
     (*gen_a)[5][4] = true;
     (*gen_a)[5][5] = true;
+}*/
+
+void setup(sf::RenderWindow& window, vector<vector<bool>> *gen_a, int& c, int& r) {
+    sf::Font font;
+    font.loadFromFile("src/conway/arial.ttf");
+
+    int max_x, max_y;
+    //get from window
+    max_x = window.getSize().x;
+    max_y = window.getSize().y;
+
+    sf::Text rows_text, cols_text, enter_text;
+    rows_text.setFont(font);
+    rows_text.setString("Rows:");
+    rows_text.setCharacterSize(16); // Increase character size
+    rows_text.setFillColor(sf::Color::Black);
+    rows_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 150.f));
+
+    cols_text.setFont(font);
+    cols_text.setString("Columns:");
+    cols_text.setCharacterSize(16); // Increase character size
+    cols_text.setFillColor(sf::Color::Black);
+    cols_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 130.f));
+
+    enter_text.setFont(font);
+    enter_text.setString("Enter");
+    enter_text.setCharacterSize(16); // Increase character size
+    enter_text.setFillColor(sf::Color::Black);
+    enter_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 110.f));
+
+    sf::RectangleShape rows_box(sf::Vector2f(200.f, 15.f)), 
+                       cols_box(sf::Vector2f(200.f, 15.f)),
+                       enter_box(sf::Vector2f(100.f, 15.f));
+    rows_box.setOutlineColor(sf::Color::Black);
+    rows_box.setOutlineThickness(2.f);
+    rows_box.setPosition(max_x - 250.f, max_y - 150.f);
+    cols_box.setOutlineColor(sf::Color::Black);
+    cols_box.setOutlineThickness(2.f);
+    cols_box.setPosition(max_x - 250.f, max_y - 130.f);
+    enter_box.setOutlineColor(sf::Color::Black);
+    enter_box.setOutlineThickness(2.f);
+    enter_box.setPosition(max_x - 250.f, max_y - 110.f);
+
+    bool rows_focused = false;
+    bool cols_focused = false;
+    std::string rows_input, cols_input;
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+
+            } else if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                // Check if mouse clicked on rows box
+                if (rows_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    rows_focused = true;
+                    cols_focused = false;
+                }
+                // Check if mouse clicked on cols box
+                else if (cols_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    cols_focused = true;
+                    rows_focused = false;
+                }
+                // Check if mouse clicked on enter button
+                else if (enter_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    if (!rows_input.empty() && !cols_input.empty()) {
+                        r = std::stoi(rows_input);
+                        c = std::stoi(cols_input);
+                        return;
+                    }
+                }
+            } else if (event.type == sf::Event::TextEntered) {
+                if (rows_focused) {
+                    if (event.text.unicode >= 48 && event.text.unicode <= 57) {
+                        rows_input += static_cast<char>(event.text.unicode);
+                        rows_text.setString("Rows: " + rows_input);
+                    }
+                } else if (cols_focused) {
+                    if (event.text.unicode >= 48 && event.text.unicode <= 57) {
+                        cols_input += static_cast<char>(event.text.unicode);
+                        cols_text.setString("Columns: " + cols_input);
+                    }
+                }
+            }
+        }
+
+        
+        window.draw(rows_box);
+        window.draw(cols_box);
+        window.draw(rows_text);
+        window.draw(cols_text);
+        window.draw(enter_box);
+        window.draw(enter_text);       
+        window.display();
+    }
 }
 
 void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& generation, int c, int r) {
@@ -106,11 +207,12 @@ int main() {
     vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
     vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
 
-    setup(&gen_a);
+   
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
     sf::RectangleShape grid[columns][rows];
 
+    setup(window, &gen_a, columns, rows);
   
     // Main loop that continues until the window is closed
     while (window.isOpen()) {

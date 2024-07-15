@@ -90,6 +90,7 @@ int main() {
 
     int columns = 8;
     int rows = 8;
+    int generation = 1;
 
     sf::Clock clock;
 
@@ -98,7 +99,6 @@ int main() {
 
     sf::Text text;
     text.setFont(font);
-    text.setString("Hello world");
     text.setCharacterSize(24);
     text.setFillColor(sf::Color::Blue);
     text.setPosition(10.0f, 10.0f);
@@ -107,8 +107,6 @@ int main() {
     vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
 
     setup(&gen_a);
-
-    int generation = 1;
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
     sf::RectangleShape grid[columns][rows];
@@ -126,7 +124,7 @@ int main() {
         // Clear the window
         window.clear();
 
-        /*
+        
        //set size of cells basd on window size
         sf::Vector2f windowSize = window.getView().getSize();
         sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
@@ -146,20 +144,20 @@ int main() {
                 window.draw(grid[i][j]);
             }
         }
-        */
-
-       window.draw(text);
+        
+        text.setString("Generation: "+std::to_string(generation));
+        window.draw(text);
 
         // Display the contents of the window
         window.display();
 
-/*
+
         sf::Time elapsed = clock.getElapsedTime();
         if(elapsed.asSeconds() > 1){
             clock.restart();
             updateGrid(gen_a, gen_b, generation, columns, rows);
 
-        }*/
+        }
 
     }
 

@@ -58,6 +58,7 @@ void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c,
     //map this backwards. get i & j based off pos
 
     //grid[i][j].setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
+    bool isMousePressed = false;
 
     while (window.isOpen()) {
 
@@ -68,18 +69,34 @@ void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c,
         // Handle events
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-
-                int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
-                int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
-
-                gen_a[i][j] = !gen_a[i][j];
             }
-            if (event.type == sf::Event::KeyPressed) {
+            else if (event.type == sf::Event::MouseButtonPressed) {
+                    isMousePressed = true;
+                    // Toggle the cell under the mouse
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                    int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
+                    int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
+                    if (i >= 0 && i < c && j >= 0 && j < r) {
+                        gen_a[i][j] = !gen_a[i][j];
+                    }
+            }
+            else if (event.type == sf::Event::MouseButtonReleased) {
+                    isMousePressed = false;
+            }
+            else if (event.type == sf::Event::MouseMoved) {
+                if (isMousePressed) {
+                    // Continuous toggle as the mouse moves
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                    int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
+                    int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
+                    if (i >= 0 && i < c && j >= 0 && j < r) {
+                        gen_a[i][j] = !gen_a[i][j];
+                    }
+                }
+            }
+            else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Enter) {
                     return;
                 }

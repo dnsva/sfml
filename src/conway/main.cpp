@@ -29,7 +29,80 @@ using std::vector;
     (*gen_a)[5][5] = true;
 }*/
 
-void setup(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<bool>> &gen_b, int& c, int& r) {
+void draw_grid(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int r) {
+    //set size of cells basd on window size
+    sf::Vector2f windowSize = window.getView().getSize();
+    sf::Vector2f cellSize(windowSize.x / c, windowSize.y / r);
+
+    //PRINT GEN_A 
+
+    for(int i=0;i<c;i++){
+        for(int j=0;j<r;j++){
+            sf::RectangleShape cell;
+            cell.setSize(cellSize);
+            if(gen_a[i][j]){
+                cell.setFillColor(sf::Color::White);
+            }else{
+                cell.setFillColor(sf::Color::Black);
+            }
+            cell.setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
+            window.draw(cell);
+        }
+    }
+}
+
+void setup_squares(sf::RenderWindow& window, vector<vector<bool>> &gen_a, int c, int r) {
+    //depending on where user clicks, set the index of gen_a to true. if double click, set to false
+    //if user presses enter, start the game
+
+    //map this backwards. get i & j based off pos
+
+    //grid[i][j].setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
+
+    while (window.isOpen()) {
+
+        //set size of cells basd on window size
+        sf::Vector2f windowSize = window.getView().getSize();
+        sf::Vector2f cellSize(windowSize.x / c, windowSize.y / r);
+
+        // Handle events
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+
+                int i = static_cast<int>((mousePos.x - 5.0f) / cellSize.x);
+                int j = static_cast<int>((mousePos.y - 5.0f) / cellSize.y);
+
+                gen_a[i][j] = !gen_a[i][j];
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Enter) {
+                    return;
+                }
+            }
+        }
+
+        // Clear the window
+        window.clear();
+
+        //PRINT GEN_A 
+        draw_grid(window, gen_a, c, r);
+
+
+        // Display the contents of the window
+        window.display();
+
+    }
+
+    
+
+}
+
+void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<bool>> &gen_b, int& c, int& r) {
     sf::Font font;
     font.loadFromFile("src/conway/arial.ttf");
 
@@ -112,7 +185,7 @@ void setup(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<
                       //  }
 
                         // Example initialization (remove in final version)
-                       gen_a[3][3] = true;
+                        gen_a[3][3] = true;
                         gen_a[3][4] = true;
                         gen_a[3][5] = true;
                         gen_a[4][3] = true;
@@ -121,6 +194,7 @@ void setup(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<
                         gen_a[5][3] = true;
                         gen_a[5][4] = true;
                         gen_a[5][5] = true;
+
 
                         return;
                     }
@@ -236,7 +310,8 @@ int main() {
   //  vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
   //  vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
     vector<vector<bool>> gen_a, gen_b;
-    setup(window, gen_a, gen_b, columns, rows);
+    setup_rows_and_cols(window, gen_a, gen_b, columns, rows);
+    setup_squares(window, gen_a, columns, rows);
     
   
     // Main loop that continues until the window is closed
@@ -252,25 +327,7 @@ int main() {
         window.clear();
 
         
-       //set size of cells basd on window size
-        sf::Vector2f windowSize = window.getView().getSize();
-        sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
-
-
-        //PRINT GEN_A 
-
-        for(int i=0;i<columns;i++){
-            for(int j=0;j<rows;j++){
-                grid[i][j].setSize(cellSize);
-                if(gen_a[i][j]){
-                    grid[i][j].setFillColor(sf::Color::White);
-                }else{
-                    grid[i][j].setFillColor(sf::Color::Black);
-                }
-                grid[i][j].setPosition(i*cellSize.x + 5.0f, j*cellSize.y + 5.0f);
-                window.draw(grid[i][j]);
-            }
-        }
+       draw_grid(window, gen_a, columns, rows);
         
         text.setString("Generation: "+std::to_string(generation));
         window.draw(text);

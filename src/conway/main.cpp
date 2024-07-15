@@ -29,7 +29,7 @@ using std::vector;
     (*gen_a)[5][5] = true;
 }*/
 
-void setup(sf::RenderWindow& window, vector<vector<bool>> *gen_a, int& c, int& r) {
+void setup(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<bool>> &gen_b, int& c, int& r) {
     sf::Font font;
     font.loadFromFile("src/conway/arial.ttf");
 
@@ -79,25 +79,49 @@ void setup(sf::RenderWindow& window, vector<vector<bool>> *gen_a, int& c, int& r
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-                // Check if mouse clicked on rows box
                 if (rows_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     rows_focused = true;
                     cols_focused = false;
-                }
-                // Check if mouse clicked on cols box
-                else if (cols_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                } else if (cols_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     cols_focused = true;
                     rows_focused = false;
-                }
-                // Check if mouse clicked on enter button
-                else if (enter_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                } else if (enter_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     if (!rows_input.empty() && !cols_input.empty()) {
+
+                       // Convert input to integers
                         r = std::stoi(rows_input);
                         c = std::stoi(cols_input);
+
+                        // Clear and resize gen_a and gen_b
+                        gen_a.clear();
+                        gen_a.resize(r, std::vector<bool>(c, false));
+                        gen_b.clear();
+                        gen_b.resize(r, std::vector<bool>(c, false));
+
+                       // r = std::stoi(rows_input);
+                      //  c = std::stoi(cols_input);
+
+                         //Clear gen_a and then resize
+                      //  gen_a.clear();
+                      //  gen_a.resize(r);
+                      //  for (int i = 0; i < r; ++i) {
+                      //      gen_a[i].resize(c, false);
+                      //  }
+
+                        // Example initialization (remove in final version)
+                       gen_a[3][3] = true;
+                        gen_a[3][4] = true;
+                        gen_a[3][5] = true;
+                        gen_a[4][3] = true;
+                        gen_a[4][4] = true;
+                        gen_a[4][5] = true;
+                        gen_a[5][3] = true;
+                        gen_a[5][4] = true;
+                        gen_a[5][5] = true;
+
                         return;
                     }
                 }
@@ -116,15 +140,16 @@ void setup(sf::RenderWindow& window, vector<vector<bool>> *gen_a, int& c, int& r
             }
         }
 
-        
+        window.clear();
         window.draw(rows_box);
         window.draw(cols_box);
         window.draw(rows_text);
         window.draw(cols_text);
         window.draw(enter_box);
-        window.draw(enter_text);       
+        window.draw(enter_text);
         window.display();
     }
+
 }
 
 void updateGrid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& generation, int c, int r) {
@@ -189,8 +214,8 @@ int main() {
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
 
-    int columns = 8;
-    int rows = 8;
+    int columns = 100;
+    int rows = 100;
     int generation = 1;
 
     sf::Clock clock;
@@ -204,15 +229,15 @@ int main() {
     text.setFillColor(sf::Color::Blue);
     text.setPosition(10.0f, 10.0f);
 
-    vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
-    vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
-
-   
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
     sf::RectangleShape grid[columns][rows];
 
-    setup(window, &gen_a, columns, rows);
+  //  vector<vector<bool>> gen_a(columns, vector<bool>(rows, false));
+  //  vector<vector<bool>> gen_b(columns, vector<bool>(rows, false));
+    vector<vector<bool>> gen_a, gen_b;
+    setup(window, gen_a, gen_b, columns, rows);
+    
   
     // Main loop that continues until the window is closed
     while (window.isOpen()) {

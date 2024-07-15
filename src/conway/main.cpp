@@ -118,18 +118,12 @@ void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, 
     max_x = window.getSize().x;
     max_y = window.getSize().y;
 
-    sf::Text rows_text, cols_text, enter_text;
-    rows_text.setFont(font);
-    rows_text.setString("Rows:");
-    rows_text.setCharacterSize(16); // Increase character size
-    rows_text.setFillColor(sf::Color::Black);
-    rows_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 150.f));
-
-    cols_text.setFont(font);
-    cols_text.setString("Columns:");
-    cols_text.setCharacterSize(16); // Increase character size
-    cols_text.setFillColor(sf::Color::Black);
-    cols_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 130.f));
+    sf::Text dims_text, enter_text;
+    dims_text.setFont(font);
+    dims_text.setString("Grid r/c size:");
+    dims_text.setCharacterSize(16); // Increase character size
+    dims_text.setFillColor(sf::Color::Black);
+    dims_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 150.f));
 
     enter_text.setFont(font);
     enter_text.setString("Enter");
@@ -137,22 +131,18 @@ void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, 
     enter_text.setFillColor(sf::Color::Black);
     enter_text.setPosition(std::round(max_x - 250.f), std::round(max_y - 110.f));
 
-    sf::RectangleShape rows_box(sf::Vector2f(200.f, 15.f)), 
-                       cols_box(sf::Vector2f(200.f, 15.f)),
+    sf::RectangleShape dims_box(sf::Vector2f(200.f, 15.f)), 
                        enter_box(sf::Vector2f(100.f, 15.f));
-    rows_box.setOutlineColor(sf::Color::Black);
-    rows_box.setOutlineThickness(2.f);
-    rows_box.setPosition(max_x - 250.f, max_y - 150.f);
-    cols_box.setOutlineColor(sf::Color::Black);
-    cols_box.setOutlineThickness(2.f);
-    cols_box.setPosition(max_x - 250.f, max_y - 130.f);
+    dims_box.setOutlineColor(sf::Color::Black);
+    dims_box.setOutlineThickness(2.f);
+    dims_box.setPosition(max_x - 250.f, max_y - 150.f);
     enter_box.setOutlineColor(sf::Color::Black);
     enter_box.setOutlineThickness(2.f);
     enter_box.setPosition(max_x - 250.f, max_y - 110.f);
 
-    bool rows_focused = false;
-    bool cols_focused = false;
-    std::string rows_input, cols_input;
+    std::string dims_input;
+
+    bool dims_focused = false;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -162,18 +152,12 @@ void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, 
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-                if (rows_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    rows_focused = true;
-                    cols_focused = false;
-                } else if (cols_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    cols_focused = true;
-                    rows_focused = false;
-                } else if (enter_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    if (!rows_input.empty() && !cols_input.empty()) {
+                if (enter_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    if (!dims_input.empty()) {
 
                        // Convert input to integers
-                        r = std::stoi(rows_input);
-                        c = std::stoi(cols_input);
+                        r = std::stoi(dims_input);
+                        c = std::stoi(dims_input);
 
                         // Clear and resize gen_a and gen_b
                         gen_a.clear();
@@ -181,51 +165,29 @@ void setup_rows_and_cols(sf::RenderWindow& window, vector<vector<bool>> &gen_a, 
                         gen_b.clear();
                         gen_b.resize(r, std::vector<bool>(c, false));
 
-                       // r = std::stoi(rows_input);
-                      //  c = std::stoi(cols_input);
-
-                         //Clear gen_a and then resize
-                      //  gen_a.clear();
-                      //  gen_a.resize(r);
-                      //  for (int i = 0; i < r; ++i) {
-                      //      gen_a[i].resize(c, false);
-                      //  }
-
-                        // Example initialization (remove in final version)
-                        gen_a[3][3] = true;
-                        gen_a[3][4] = true;
-                        gen_a[3][5] = true;
-                        gen_a[4][3] = true;
-                        gen_a[4][4] = true;
-                        gen_a[4][5] = true;
-                        gen_a[5][3] = true;
-                        gen_a[5][4] = true;
-                        gen_a[5][5] = true;
-
-
                         return;
                     }
                 }
-            } else if (event.type == sf::Event::TextEntered) {
-                if (rows_focused) {
-                    if (event.text.unicode >= 48 && event.text.unicode <= 57) {
-                        rows_input += static_cast<char>(event.text.unicode);
-                        rows_text.setString("Rows: " + rows_input);
+            } else if( event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Backspace) {
+                    if (!dims_input.empty()) {
+                        dims_input.pop_back();
+                        dims_text.setString("Grid r/c size: " + dims_input);
                     }
-                } else if (cols_focused) {
-                    if (event.text.unicode >= 48 && event.text.unicode <= 57) {
-                        cols_input += static_cast<char>(event.text.unicode);
-                        cols_text.setString("Columns: " + cols_input);
-                    }
+                    
                 }
+            }else if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode >= 48 && event.text.unicode <= 57) {
+                    dims_input += static_cast<char>(event.text.unicode);
+                    dims_text.setString("Grid r/c size: " + dims_input);
+                }
+                
             }
         }
 
         window.clear();
-        window.draw(rows_box);
-        window.draw(cols_box);
-        window.draw(rows_text);
-        window.draw(cols_text);
+        window.draw(dims_box);
+        window.draw(dims_text);
         window.draw(enter_box);
         window.draw(enter_text);
         window.display();
@@ -342,7 +304,7 @@ int main() {
         window.clear();
 
         
-       draw_grid(window, gen_a, columns, rows);
+        draw_grid(window, gen_a, columns, rows);
         
         text_generation.setString("Generation: "+std::to_string(generation));
         text_population.setString("Population: "+std::to_string(population));

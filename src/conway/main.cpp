@@ -6,6 +6,15 @@
 //Build:
 //./build/bin/main
 
+/* Rules - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules
+
+Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+Any live cell with two or three live neighbours lives on to the next generation.
+Any live cell with more than three live neighbours dies, as if by overpopulation.
+Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+*/
+
 int main() {
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
@@ -15,10 +24,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Conways Game of Life");
     sf::RectangleShape grid[columns][rows];
 
-    // Create a red square shape
-    sf::CircleShape redSquare(50);
-    redSquare.setFillColor(sf::Color::Red);
-    redSquare.setPosition(0.f, 0.f);
+  
 
     // Main loop that continues until the window is closed
     while (window.isOpen()) {
@@ -31,12 +37,6 @@ int main() {
 
         // Clear the window
         window.clear();
-
-        // Draw the red square
-       // redSquare.move(0.1f, 0.1f);
-       // window.draw(redSquare);
-
-       // sf::Vector2f cellSize(100.0f, 100.0f);
 
        //set size of cells basd on window size
         sf::Vector2f windowSize = window.getView().getSize();

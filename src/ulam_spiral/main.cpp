@@ -1,24 +1,24 @@
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 //Compile:
 //cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release
 
 //Build:
 //./build/bin/main
 
-long long spiral[100][100];
+long long spiral[120][120];
 
 #define ll long long 
 void createSpiral(){
     //TO DO
 
-    int r = 499, c = 499;
+    int r = 49, c = 49;
 
     int counter = 1;
 
     spiral[r][c] = counter;
 
-    for(int i = 0; i < 50; ++i){
+    for(int i = 1; i < 4; ++i){
         int s = (i*8-4)/4;
         for(int j = 0; j < s; ++j){
             spiral[r-j][c+1] = ++counter;
@@ -43,6 +43,8 @@ void createSpiral(){
         c = c+s; //update c to the pivot
     }
 
+//    spiral[499][499] = 1;
+
 }
 
 bool isPrime(int n) {
@@ -55,7 +57,25 @@ bool isPrime(int n) {
     return true;
 }
 
+void testSpiralFill(){
+    createSpiral();
+    for(int i = 0; i < 120; ++i){
+        for(int j = 0; j < 120; ++j){
+            if(spiral[i][j] < 10){
+                std::cout<<" ";
+            }
+            std::cout<<spiral[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
+
+}
+
 int main() {
+
+    testSpiralFill();
+
+    /*
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
 
@@ -112,6 +132,6 @@ int main() {
         // Display the contents of the window
         window.display();
     }
-
+    */
     return 0;
 }

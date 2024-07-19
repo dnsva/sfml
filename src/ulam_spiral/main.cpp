@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 //Compile:
 //cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release
@@ -9,7 +8,7 @@
 
 int total_rows = 200, total_cols = 200; //set default values
 
-bool is_prime(int n){ //check if n is prime
+inline bool is_prime(int n){ //check if n is prime
     if (n <= 1 || n % 2 == 0 || n % 3 == 0) return false;
     if (n <= 3) return true;
     for (int i = 5; i * i <= n; i += 6) {

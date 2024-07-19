@@ -6,19 +6,18 @@
 //Build:
 //./build/bin/main
 
-long long spiral[99][99];
+long long spiral[154][154];
 
 #define ll long long 
 void createSpiral(){
-    //TO DO
 
-    int r = 49, c = 49;
+    int r = 76, c = 76;
 
     int counter = 1;
 
     spiral[r][c] = counter;
 
-    for(int i = 1; i < 50; ++i){
+    for(int i = 1; i < 77; ++i){
         int s = (i*8-4)/4;
         for(int j = 0; j < s; ++j){
             spiral[r-j][c+1] = ++counter;
@@ -83,8 +82,8 @@ int main() {
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
 
-    int columns = 99;
-    int rows = 99;
+    int columns = 154;
+    int rows = 154;
     sf::RenderWindow window(sf::VideoMode(800, 800), "Ulam's Spiral");
     sf::RectangleShape grid[columns][rows];
 
@@ -105,8 +104,8 @@ int main() {
         sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
 
 
-        for (int i = 0; i < columns; i++) {
-            for (int j = 0; j < rows; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 grid[i][j].setSize(cellSize);
 
                 if(isPrime(spiral[i][j])){
@@ -118,12 +117,12 @@ int main() {
                     // Set color
                     grid[i][j].setFillColor(sf::Color(red, green, blue));
 
-                    grid[i][j].setPosition(i * cellSize.x + 5.0f, j * cellSize.y + 5.0f);
+                    grid[i][j].setPosition(j * cellSize.x + 5.0f, i * cellSize.y + 5.0f);
 
                     
                 }else{
                     grid[i][j].setFillColor(sf::Color::Black);
-                    grid[i][j].setPosition(i * cellSize.x + 5.0f, j * cellSize.y + 5.0f);
+                    grid[i][j].setPosition(j * cellSize.x + 5.0f, i * cellSize.y + 5.0f);
                 }
                 
                 window.draw(grid[i][j]);

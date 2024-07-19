@@ -8,8 +8,41 @@
 
 long long spiral[100][100];
 
+#define ll long long 
 void createSpiral(){
     //TO DO
+
+    int r = 499, c = 499;
+
+    int counter = 1;
+
+    spiral[r][c] = counter;
+
+    for(int i = 0; i < 50; ++i){
+        int s = (i*8-4)/4;
+        for(int j = 0; j < s; ++j){
+            spiral[r-j][c+1] = ++counter;
+        }
+        spiral[r-s][c+1] = ++counter; //top right pivot
+        r = r-s+1; //update r, c
+        for(int j = 0; j < s; ++j){
+            spiral[r-1][c-j] = ++counter;
+        }
+        spiral[r-1][c-s] = ++counter; //top left pivot
+        c = c-s+1; //update r, c
+        for(int j = 0; j < s; ++j){
+            spiral[r+j][c-1] = ++counter;
+        }
+        spiral[r+s][c-1] = ++counter; //bottom left pivot
+        r = r+s-1; //update r, c
+        for(int j = 0; j < s; ++j){
+            spiral[r+1][c+j] = ++counter;
+        }
+        spiral[r+1][c+s] = ++counter; //bottom right pivot
+        r = r+1; //update r to the pivot
+        c = c+s; //update c to the pivot
+    }
+
 }
 
 bool isPrime(int n) {

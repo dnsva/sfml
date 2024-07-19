@@ -84,7 +84,7 @@ int main() {
 
     int columns = 154;
     int rows = 154;
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Ulam's Spiral");
+    sf::RenderWindow window(sf::VideoMode(500,500), "Ulam's Spiral");
     sf::RectangleShape grid[columns][rows];
 
     // Main loop that continues until the window is closed
@@ -110,9 +110,10 @@ int main() {
 
                 if(isPrime(spiral[i][j])){
                     // Calculate RGB values based on i and j
-                    sf::Uint8 red = static_cast<sf::Uint8>((i * 255) / columns);      // Varies red component horizontally
-                    sf::Uint8 green = static_cast<sf::Uint8>((j * 255) / rows);       // Varies green component vertically
-                    sf::Uint8 blue = static_cast<sf::Uint8>(128);                     // Fixed blue component for simplicity
+                    sf::Uint8 red = static_cast<sf::Uint8>((j * 128) / columns);    // Varies red component horizontally
+                    sf::Uint8 green =static_cast<sf::Uint8>(128);                                            // No green component (you can adjust this if needed)
+                    sf::Uint8 blue = static_cast<sf::Uint8>((i * 255) / rows);       // Varies blue component vertically
+
 
                     // Set color
                     grid[i][j].setFillColor(sf::Color(red, green, blue));

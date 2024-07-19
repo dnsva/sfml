@@ -18,18 +18,19 @@ Example:  `./build/bin/main 200` will run with 200 rows and 200 columns
 
 <hr>
 
+## Photos
+### 10x10
+<img src="10x10.png" width="500" height="500" ></img>
+### 100x100
+<img src="100x100.png" width="500" height="500" ></img>
+### 1000x1000
+<img src="1000x1000.png" width="500" height="500" ></img>
+
+<hr>
+
 ## Code Explanations
 
 <b>Calculating what iteration to stop at based on the size of the grid:</b>
 
 <u>Note:</u> $i*8$ = total amount of elements in iteration $i$ \
-One row contains $ (i*8-4)/4 + 2 $ elements \
-So, $ \text{total\_rows} = (i*8-4)/4 + 2 $ elements
-
-$ \text{rows} - 2 = (i\*8-4)/4 $ \
-$ 4(\text{rows}-2) = i\*8-4 $ \
-$ 4(\text{rows}-2)+4 = i\*8 $ \
-$ i = (4(\text{rows}-2)+4)/8 $ \
-$ i = (4\text{rows}-8+4)/8 $\
-$ i = (4\text{rows}-4)/8 $\
-$ i = (\text{rows}-1)/2 $
+One row contains $(i*8-4)/4 + 2$ elements. So, after some math, $i = (total\_rows-1)/2$

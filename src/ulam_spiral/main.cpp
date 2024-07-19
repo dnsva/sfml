@@ -6,7 +6,7 @@
 //Build:
 //./build/bin/main
 
-long long spiral[120][120];
+long long spiral[99][99];
 
 #define ll long long 
 void createSpiral(){
@@ -18,7 +18,7 @@ void createSpiral(){
 
     spiral[r][c] = counter;
 
-    for(int i = 1; i < 4; ++i){
+    for(int i = 1; i < 50; ++i){
         int s = (i*8-4)/4;
         for(int j = 0; j < s; ++j){
             spiral[r-j][c+1] = ++counter;
@@ -59,9 +59,13 @@ bool isPrime(int n) {
 
 void testSpiralFill(){
     createSpiral();
-    for(int i = 0; i < 120; ++i){
-        for(int j = 0; j < 120; ++j){
+    for(int i = 0; i < 99; ++i){
+        for(int j = 0; j < 99; ++j){
             if(spiral[i][j] < 10){
+                std::cout<<"   ";
+            }else if (spiral[i][j] < 100){
+                std::cout<<"  ";
+            }else if (spiral[i][j] < 1000){
                 std::cout<<" ";
             }
             std::cout<<spiral[i][j]<<" ";

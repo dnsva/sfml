@@ -11,36 +11,7 @@ long long spiral[154][154];
 #define ll long long 
 void createSpiral(){
 
-    int r = 76, c = 76;
-
-    int counter = 1;
-
-    spiral[r][c] = counter;
-
-    for(int i = 1; i < 77; ++i){
-        int s = (i*8-4)/4;
-        for(int j = 0; j < s; ++j){
-            spiral[r-j][c+1] = ++counter;
-        }
-        spiral[r-s][c+1] = ++counter; //top right pivot
-        r = r-s+1; //update r, c
-        for(int j = 0; j < s; ++j){
-            spiral[r-1][c-j] = ++counter;
-        }
-        spiral[r-1][c-s] = ++counter; //top left pivot
-        c = c-s+1; //update r, c
-        for(int j = 0; j < s; ++j){
-            spiral[r+j][c-1] = ++counter;
-        }
-        spiral[r+s][c-1] = ++counter; //bottom left pivot
-        r = r+s-1; //update r, c
-        for(int j = 0; j < s; ++j){
-            spiral[r+1][c+j] = ++counter;
-        }
-        spiral[r+1][c+s] = ++counter; //bottom right pivot
-        r = r+1; //update r to the pivot
-        c = c+s; //update c to the pivot
-    }
+    
 
 //    spiral[499][499] = 1;
 
@@ -56,27 +27,28 @@ bool isPrime(int n) {
     return true;
 }
 
-void testSpiralFill(){
-    createSpiral();
-    for(int i = 0; i < 99; ++i){
-        for(int j = 0; j < 99; ++j){
-            if(spiral[i][j] < 10){
-                std::cout<<"   ";
-            }else if (spiral[i][j] < 100){
-                std::cout<<"  ";
-            }else if (spiral[i][j] < 1000){
-                std::cout<<" ";
-            }
-            std::cout<<spiral[i][j]<<" ";
-        }
-        std::cout<<"\n";
-    }
+sf::Color getColor(int i, int j){
+    // Calculate RGB values based on i and j
+    sf::Uint8 red = static_cast<sf::Uint8>((j * 128) / 154);    // Varies red component horizontally
+    sf::Uint8 green =static_cast<sf::Uint8>(128);                   // No green component (you can adjust this if needed)
+    sf::Uint8 blue = static_cast<sf::Uint8>((i * 255) / 154);      // Varies blue component vertically
 
+    return sf::Color(red, green, blue);
+
+}
+
+void drawSquare(int i, int j, sf::RenderWindow &window, sf::Vector2f cellSize, bool prime){
+    sf::RectangleShape cell;
+    cell.setSize(cellSize);
+    cell.setPosition(j * cellSize.x + 5.0f, i * cellSize.y + 5.0f);
+    if(prime) cell.setFillColor(getColor(i, j));
+    else cell.setFillColor(sf::Color::Black);
+    window.draw(cell);
 }
 
 int main() {
 
-    createSpiral();
+   // createSpiral();
 
     
     // Create the main window
@@ -104,33 +76,48 @@ int main() {
         sf::Vector2f cellSize(windowSize.x / columns, windowSize.y / rows);
 
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                grid[i][j].setSize(cellSize);
+        int r = 76, c = 76;
 
-                if(isPrime(spiral[i][j])){
-                    // Calculate RGB values based on i and j
-                    sf::Uint8 red = static_cast<sf::Uint8>((j * 128) / columns);    // Varies red component horizontally
-                    sf::Uint8 green =static_cast<sf::Uint8>(128);                                            // No green component (you can adjust this if needed)
-                    sf::Uint8 blue = static_cast<sf::Uint8>((i * 255) / rows);       // Varies blue component vertically
+        int counter = 1;
 
+        spiral[r][c] = counter;
 
-                    // Set color
-                    grid[i][j].setFillColor(sf::Color(red, green, blue));
-
-                    grid[i][j].setPosition(j * cellSize.x + 5.0f, i * cellSize.y + 5.0f);
-
-                    
-                }else{
-                    grid[i][j].setFillColor(sf::Color::Black);
-                    grid[i][j].setPosition(j * cellSize.x + 5.0f, i * cellSize.y + 5.0f);
-                }
-                
-                window.draw(grid[i][j]);
+        for(int i = 1; i < 77; ++i){
+            int s = (i*8-4)/4;
+            for(int j = 0; j < s; ++j){
+                drawSquare(r-j, c+1, window, cellSize, isPrime(++counter));
             }
+            drawSquare(r-s, c+1, window, cellSize, isPrime(++counter));
+            r = r-s+1; //update r, c
+            for(int j = 0; j < s; ++j){
+                //spiral[r-1][c-j] = ++counter;
+                drawSquare(r-1, c-j, window, cellSize, isPrime(++counter));
+            }
+
+            //spiral[r-1][c-s] = ++counter; //top left pivot
+            drawSquare(r-1, c-s, window, cellSize, isPrime(++counter));
+
+            c = c-s+1; //update r, c
+
+            for(int j = 0; j < s; ++j){
+                //spiral[r+j][c-1] = ++counter;
+                drawSquare(r+j, c-1, window, cellSize, isPrime(++counter));
+            }
+            //spiral[r+s][c-1] = ++counter; //bottom left pivot
+            drawSquare(r+s, c-1, window, cellSize, isPrime(++counter));
+
+            r = r+s-1; //update r, c
+
+            for(int j = 0; j < s; ++j){
+                //spiral[r+1][c+j] = ++counter;
+                drawSquare(r+1, c+j, window, cellSize, isPrime(++counter));
+            }
+            //spiral[r+1][c+s] = ++counter; //bottom right pivot
+            drawSquare(r+1, c+s, window, cellSize, isPrime(++counter));
+
+            r = r+1; //update r to the pivot
+            c = c+s; //update c to the pivot
         }
-
-
 
 
         // Display the contents of the window

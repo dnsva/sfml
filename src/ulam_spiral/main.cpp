@@ -77,14 +77,14 @@ void testSpiralFill(){
 
 int main() {
 
-    testSpiralFill();
+    createSpiral();
 
-    /*
+    
     // Create the main window
 //    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Red Square");
 
-    int columns = 100;
-    int rows = 100;
+    int columns = 99;
+    int rows = 99;
     sf::RenderWindow window(sf::VideoMode(800, 800), "Ulam's Spiral");
     sf::RectangleShape grid[columns][rows];
 
@@ -122,7 +122,7 @@ int main() {
 
                     
                 }else{
-                    grid[i][j].setFillColor(sf::Color::White);
+                    grid[i][j].setFillColor(sf::Color::Black);
                     grid[i][j].setPosition(i * cellSize.x + 5.0f, j * cellSize.y + 5.0f);
                 }
                 
@@ -136,6 +136,6 @@ int main() {
         // Display the contents of the window
         window.display();
     }
-    */
+    
     return 0;
 }

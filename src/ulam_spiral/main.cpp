@@ -7,6 +7,8 @@
 //Build:
 //./build/bin/main
 
+int total_rows = 200, total_cols = 200; //set default values
+
 bool isPrime(int n) {
     if (n <= 1) return false;
     if (n <= 3) return true;
@@ -17,11 +19,10 @@ bool isPrime(int n) {
     return true;
 }
 
-sf::Color getColor(int i, int j){
-    // Calculate RGB values based on i and j
-    sf::Uint8 red = static_cast<sf::Uint8>((j * 128) / 154);
+sf::Color getColor(int i, int j){ //calculate RGB values based on i and j
+    sf::Uint8 red = static_cast<sf::Uint8>((static_cast<float>(j) * 128) / total_cols);
     sf::Uint8 green =static_cast<sf::Uint8>(128);
-    sf::Uint8 blue = static_cast<sf::Uint8>((i * 255) / 154);
+    sf::Uint8 blue = static_cast<sf::Uint8>((static_cast<float>(i) * 255) / total_rows);
     return sf::Color(red, green, blue);
 }
 
@@ -37,9 +38,6 @@ void drawSquare(int i, int j, sf::RenderWindow &window, sf::Vector2f cell_size, 
 int main() {
 
     sf::RenderWindow window(sf::VideoMode(500,500), "Ulam's Spiral");
-
-    int total_cols = 154;
-    int total_rows = 154;
 
     while (window.isOpen()) { //continues until window is closed
         sf::Event event; //handle events

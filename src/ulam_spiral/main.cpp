@@ -28,7 +28,7 @@ sf::Color getColor(int i, int j){
 void drawSquare(int i, int j, sf::RenderWindow &window, sf::Vector2f cell_size, bool prime){
     sf::RectangleShape cell;
     cell.setSize(cell_size);
-    cell.setPosition(j * cell_size.x + 5.0f, i * cell_size.y + 5.0f);
+    cell.setPosition(j * cell_size.x, i * cell_size.y);
     if(prime) cell.setFillColor(getColor(i, j));
     else cell.setFillColor(sf::Color::Black);
     window.draw(cell);
@@ -52,10 +52,11 @@ int main() {
         sf::Vector2f window_size = window.getView().getSize();
         sf::Vector2f cell_size(window_size.x / total_cols, window_size.y / total_rows);
 
-        int r = 76, c = 76; //start at the center
+        int r = total_rows/2-1, c = total_cols/2-1; //start at the center
+
         int counter = 1; //the actual number in the spiral
 
-        for(int i = 1; i < 77; ++i){
+        for(int i = 1; i < ceil((total_rows - 1)/2.0); ++i){
             int s = (i*8-4)/4; //side length
             for(int j = 0; j < s; ++j){
                 drawSquare(r-j, c+1, window, cell_size, isPrime(++counter));

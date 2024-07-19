@@ -24,12 +24,12 @@ Example:  `./build/bin/main 200` will run with 200 rows and 200 columns
 
 <u>Note:</u> $i*8$ = total amount of elements in iteration $i$ \
 One row contains $ (i*8-4)/4 + 2 $ elements \
-So, $\text{total\_rows} = (i*8-4)/4 + 2$ elements
+So, $ \text{total\_rows} = (i*8-4)/4 + 2 $ elements
 
-$\text{rows} - 2 = (i*8-4)/4$ \
-$4(\text{rows}-2) = i*8-4 $\
-$4(\text{rows}-2)+4 = i*8$ \
-$i = (4(\text{rows}-2)+4)/8$ \
-$i = (4\text{rows}-8+4)/8 $\
-$i = (4\text{rows}-4)/8 $\
-$i = (\text{rows}-1)/2$
+$ \text{rows} - 2 = (i\*8-4)/4 $ \
+$ 4(\text{rows}-2) = i\*8-4 $ \
+$ 4(\text{rows}-2)+4 = i\*8 $ \
+$ i = (4(\text{rows}-2)+4)/8 $ \
+$ i = (4\text{rows}-8+4)/8 $\
+$ i = (4\text{rows}-4)/8 $\
+$ i = (\text{rows}-1)/2 $

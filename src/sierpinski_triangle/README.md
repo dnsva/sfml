@@ -14,3 +14,7 @@ Add a custom precision number. Default is 1 pixel.
 Compile: `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release`
 
 Build: `./build/bin/main <number>`
+
+<hr>
+
+<img src="triangle.png" height="500" width="500></img>

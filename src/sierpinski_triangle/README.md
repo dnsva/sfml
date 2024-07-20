@@ -17,4 +17,4 @@ Build: `./build/bin/main <number>`
 
 <hr>
 
-<img src="triangle.png" height="500" width="500></img>
+<img src="triangle.png" height="500" width="500"></img>

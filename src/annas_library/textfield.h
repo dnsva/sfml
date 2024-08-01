@@ -31,6 +31,11 @@ struct textfield {
         box.setSize(sf::Vector2f(width, height));
         box.setPosition(x_pos, y_pos);
         box.setFillColor(box_color);
+
+        //add a border to the box
+        box.setOutlineThickness(2);
+        box.setOutlineColor(box_color);
+        
     }
 
     void action(); //overriden in where it is implemented
@@ -46,8 +51,10 @@ struct textfield {
         //highlight the box if hovering over
         if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
             box.setFillColor(box_highlight_color);
+            box.setOutlineColor(box_highlight_color);
         } else {
             box.setFillColor(box_color);
+            box.setOutlineColor(box_color);
         }
 
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {

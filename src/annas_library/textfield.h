@@ -12,7 +12,7 @@ struct textfield {
     sf::Color text_color = sf::Color::White;
 
     sf::RectangleShape box;
-    sf::Color box_color = sf::Color::Black;
+    sf::Color box_color = sf::Color::Blue;
     sf::Color box_highlight_color = sf::Color::Yellow;
 
     int x_pos, y_pos, width, height;
@@ -29,6 +29,7 @@ struct textfield {
         curr_text.setPosition(x_pos, y_pos);
 
         box.setSize(sf::Vector2f(width, height));
+        box.setPosition(x_pos, y_pos);
         box.setFillColor(box_color);
     }
 

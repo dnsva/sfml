@@ -18,7 +18,7 @@ struct textfield {
     int x_pos, y_pos, width, height;
 
     
-    textfield() {
+    textfield(int x_pos_, int y_pos_, int width_, int height_) : x_pos(x_pos_), y_pos(y_pos_), width(width_), height(height_){
 
         font.loadFromFile("src/conway/arial.ttf");
         font.setSmooth( !font.isSmooth() );
@@ -32,9 +32,7 @@ struct textfield {
         box.setFillColor(box_color);
     }
 
-    void action(){
-        //overriden later in the main file
-    }
+    void action(); //overriden in where it is implemented
 
     void draw_textfield(sf::RenderWindow& window){
         window.draw(box);

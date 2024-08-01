@@ -11,5 +11,11 @@
 //./build/bin/main
 
 int main(){
+
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Textfield Test");
+
+    
+
+
     return 0;
 }

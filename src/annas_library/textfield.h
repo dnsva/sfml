@@ -8,17 +8,16 @@ struct textfield {
     sf::Font font;
 
     string curr_string; //current string in the box 
-
     sf::Text curr_text;
     sf::Color text_color = sf::Color::White;
+
+    sf::RectangleShape box;
     sf::Color box_color = sf::Color::Black;
     sf::Color box_highlight_color = sf::Color::Yellow;
 
     int x_pos, y_pos, width, height;
 
-    sf::RectangleShape box;
-
-
+    
     textfield() {
 
         font.loadFromFile("src/conway/arial.ttf");
@@ -37,41 +36,32 @@ struct textfield {
         //overriden later in the main file
     }
 
-    void checkButtonState(sf::Window& window) {
-        if(window.isOpen()){
-            sf::Event event;
-            if(window.pollEvent(event)){
+    void draw_textfield(sf::RenderWindow& window){
+        window.draw(box);
+        window.draw(curr_text);
+    }
 
-                if (event.type == sf::Event::Closed) {
-                    window.close();
-                }
+    void check_events(sf::RenderWindow& window, sf::Event& event){
+        sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 
-                sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
-
-                //highlight the box if hovering over
-                if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
-                    box.setFillColor(box_highlight_color);
-                } else {
-                    box.setFillColor(box_color);
-                }
-
-                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-                    action();
-                }else if(event.type == sf::Event::TextEntered) {
-                    if (event.text.unicode == 8 && !curr_string.empty()) {
-                        curr_string.pop_back();
-                        curr_text.setString(curr_string);
-                    }else if (event.text.unicode < 128) {
-                        curr_string += static_cast<char>(event.text.unicode);
-                        curr_text.setString(curr_string);
-                    }
-                } 
-            }
-            
-            window.draw(box);
-            window.draw(curr_text);
-            window.display();
+        //highlight the box if hovering over
+        if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
+            box.setFillColor(box_highlight_color);
+        } else {
+            box.setFillColor(box_color);
         }
+
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+            action();
+        }else if(event.type == sf::Event::TextEntered) {
+            if (event.text.unicode == 8 && !curr_string.empty()) {
+                curr_string.pop_back();
+                curr_text.setString(curr_string);
+            }else if (event.text.unicode < 128) {
+                curr_string += static_cast<char>(event.text.unicode);
+                curr_text.setString(curr_string);
+            }
+        } 
     }
 
     // Constructor with default values

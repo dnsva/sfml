@@ -3,6 +3,7 @@
 
 //testing textfield.h
 #include "textfield.h"
+#include "button.h"
 
 #include <iostream>
 
@@ -12,7 +13,7 @@
 //Build:
 //./build/bin/main
 
-void textfield::action(){
+void button::action(){
     std::cout << "Enter pressed" << std::endl;
 }
 
@@ -20,7 +21,7 @@ int main(){
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Textfield Test");
 
-    textfield tf(100,100,500,100);
+    button b("button", 100,100,500,100);
     
     while(window.isOpen()){
 
@@ -29,11 +30,11 @@ int main(){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
-            tf.textfield::check_events(window, event);
+            b.check_button_events(window, event);
         }
 
         window.clear();
-        tf.textfield::draw_textfield(window);
+        b.draw_button(window);
         window.display();
     }
 

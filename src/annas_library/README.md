@@ -24,7 +24,7 @@ int main(){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
-            tf.textfield::check_events(window, event);
+            tf.textfield::check_textfield_events(window, event);
         }
         window.clear();
         tf.textfield::draw_textfield(window);

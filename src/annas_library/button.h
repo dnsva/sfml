@@ -3,11 +3,11 @@
 
 using std::string;
 
-struct textfield {
+struct button {
 
     sf::Font font;
 
-    string curr_string; //current string in the box 
+    string text; //the string in the button
     sf::Text curr_text;
     sf::Color text_color = sf::Color::White;
 
@@ -17,8 +17,7 @@ struct textfield {
 
     int x_pos, y_pos, width, height;
 
-    
-    textfield(int x_pos_, int y_pos_, int width_, int height_) : x_pos(x_pos_), y_pos(y_pos_), width(width_), height(height_){
+    button(string text_, int x_pos_, int y_pos_, int width_, int height_) : text(text_), x_pos(x_pos_), y_pos(y_pos_), width(width_), height(height_){
 
         font.loadFromFile("src/conway/arial.ttf");
         font.setSmooth( !font.isSmooth() );
@@ -27,6 +26,7 @@ struct textfield {
         curr_text.setFont(font);
         curr_text.setCharacterSize(24);
         curr_text.setPosition(x_pos, y_pos);
+        curr_text.setString(text);
 
         box.setSize(sf::Vector2f(width, height));
         box.setPosition(x_pos, y_pos);
@@ -35,17 +35,16 @@ struct textfield {
         //add a border to the box
         box.setOutlineThickness(2);
         box.setOutlineColor(box_color);
-        
     }
 
     void action(); //overriden in where it is implemented
 
-    void draw_textfield(sf::RenderWindow& window){
+    void draw_button(sf::RenderWindow& window){
         window.draw(box);
         window.draw(curr_text);
     }
 
-    void check_textfield_events(sf::RenderWindow& window, sf::Event& event){
+    void check_button_events(sf::RenderWindow& window, sf::Event& event){
         sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 
         //highlight the box if hovering over
@@ -57,25 +56,10 @@ struct textfield {
             box.setOutlineColor(box_color);
         }
 
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-            action();
-        }else if(event.type == sf::Event::TextEntered) {
-            if (event.text.unicode == 8 && !curr_string.empty()) {
-                curr_string.pop_back();
-                curr_text.setString(curr_string);
-            }else if (event.text.unicode < 128) {
-                curr_string += static_cast<char>(event.text.unicode);
-                curr_text.setString(curr_string);
+        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+            if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
+                action();
             }
-        } 
+        }
     }
-
-    // Constructor with default values
-    //MyStruct(int a = 0, int b = 0) : x(a), y(b) {}
-    // Default constructor
-    //MyStruct() : x(0), y(0) {}
-    // Parameterized constructor
-    //MyStruct(int a, int b) : x(a), y(b) {}
-
-
 };

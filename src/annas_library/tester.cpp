@@ -14,7 +14,7 @@
 //./build/bin/main
 
 void button::action(){
-    std::cout << "Enter pressed" << std::endl;
+    std::cout << "Button pressed" << std::endl;
 }
 
 int main(){

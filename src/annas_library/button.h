@@ -19,7 +19,7 @@ struct button {
 
     button(string text_, int x_pos_, int y_pos_, int width_, int height_) : text(text_), x_pos(x_pos_), y_pos(y_pos_), width(width_), height(height_){
 
-        font.loadFromFile("src/conway/arial.ttf");
+        font.loadFromFile("src/fonts/arial.ttf");
         font.setSmooth( !font.isSmooth() );
 
         curr_text.setFillColor(text_color);

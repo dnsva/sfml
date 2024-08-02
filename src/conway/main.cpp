@@ -24,7 +24,7 @@ void update_grid(vector<vector<bool>>& gen_a, vector<vector<bool>>& gen_b, int& 
 
 void setup(sf::RenderWindow& window, vector<vector<bool>> &gen_a, vector<vector<bool>> &gen_b, int& c, int& r, int & generation, int & population) {
     sf::Font font;
-    font.loadFromFile("src/conway/arial.ttf");
+    font.loadFromFile("src/fonts/arial.ttf");
     font.setSmooth( !font.isSmooth() );
     bool isMousePressed = false;
     int max_x = window.getSize().x, max_y = window.getSize().y;

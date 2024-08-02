@@ -47,7 +47,7 @@ This is a simple button class that can be used to create a button in the console
 #include <iostream>
 
 void button::action(){
-    std::cout << "Enter pressed" << std::endl;
+    std::cout << "Button pressed" << std::endl;
 }
 
 int main(){

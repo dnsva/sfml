@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <functional>
 
 using std::string;
 
@@ -37,7 +38,8 @@ struct button {
         box.setOutlineColor(box_color);
     }
 
-    void action(); //overriden in where it is implemented
+    //void action(); //overriden in where it is implemented
+    std::function<void()> action;
 
     void draw_button(sf::RenderWindow& window){
         window.draw(box);

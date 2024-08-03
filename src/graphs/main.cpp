@@ -5,6 +5,9 @@
 #include <utility>
 #include <iostream>
 
+#include "../annas_library/button.h"
+#include "../annas_library/textfield.h"
+
 using namespace std;
 
 //Compile:
@@ -46,10 +49,6 @@ void resize_grid(vector<vector<int>> &grid, int new_size) {
    
 }
 */
-
-pair<int,int> grid_to_pixel(int x, int y){
-    return {x*50, y*50};
-}
 
 int main(){
 
@@ -132,6 +131,54 @@ int main(){
         box.setPosition(0, 600);
         window.draw(box);
 
+        /* ADD NODE OPTION
+        row: [textfield]
+        col: [textfield]
+        [button: "OK"]
+
+        button action() - 
+            if rows and cols strings ARENT empty and are both NUMBERS
+            create new node at (row, col)
+            nodes.push_back(node)
+        */
+
+        textfield row_textfield(0, 600, 100, 50);
+        textfield col_textfield(100, 600, 100, 50);
+        button ok_button("OK", 200, 600, 100, 50);
+
+        row_textfield.draw_textfield(window);
+        col_textfield.draw_textfield(window);
+        ok_button.draw_button(window);
+
+        ok_button.action = [&](){
+            if(!row_textfield.curr_string.empty() && !col_textfield.curr_string.empty()){
+                bool is_number = true;
+                for(auto c : row_textfield.curr_string){
+                    if(!isdigit(c)){
+                        is_number = false;
+                        break;
+                    }
+                }
+                for(auto c : col_textfield.curr_string){
+                    if(!isdigit(c)){
+                        is_number = false;
+                        break;
+                    }
+                }
+                if(is_number){
+                    node n;
+                    n.x = stoi(col_textfield.curr_string);
+                    n.y = stoi(row_textfield.curr_string);
+                    n.circle.setPosition(n.x, n.y);
+                    n.circle_name.setFont(font);
+                    n.circle_name.setString("A"); //for now. also add textfield later for name 
+                    n.circle_name.setCharacterSize(24);
+                    n.circle_name.setFillColor(sf::Color::White);
+                    n.circle_name.setPosition(n.x, n.y);
+                    nodes.push_back(n);
+                }
+            }
+        };
 
 
         for(auto n : nodes){

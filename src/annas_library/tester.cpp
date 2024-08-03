@@ -13,9 +13,10 @@
 //Build:
 //./build/bin/main
 
+/*
 void button::action(){
     std::cout << "Button pressed" << std::endl;
-}
+}*/
 
 int main(){
 

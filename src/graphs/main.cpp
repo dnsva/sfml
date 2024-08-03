@@ -56,6 +56,7 @@ int main(){
     sf::Font font;
     font.loadFromFile("src/fonts/arial.ttf");
 
+    /*
     node n;
     n.circle_name.setFont(font);
     n.circle_name.setString("A");
@@ -64,6 +65,7 @@ int main(){
     n.circle_name.setPosition(0, 0);
 
     nodes.push_back(n);
+    */
 
     while(window.isOpen()){
         sf::Event event;
@@ -79,14 +81,14 @@ int main(){
             sf::Text col_text;
             col_text.setString(std::to_string(i));
             col_text.setFont(font);
-            col_text.setCharacterSize(24);
+            col_text.setCharacterSize(12);
             col_text.setFillColor(sf::Color::White);
-            col_text.setPosition(i+20, 0);
+            col_text.setPosition(i-to_string(i).length()*4.0/2, 0);
 
             sf::Vertex line[] =
             {
-                sf::Vertex(sf::Vector2f(0.f, i), sf::Color::Red),
-                sf::Vertex(sf::Vector2f(600.f, i), sf::Color::Red)
+                sf::Vertex(sf::Vector2f(0.f, i),sf::Color(194,194,204)),
+                sf::Vertex(sf::Vector2f(600.f, i), sf::Color(194,194,204))
             };
 
             window.draw(line, 2, sf::Lines);
@@ -96,14 +98,14 @@ int main(){
             sf::Text row_text;
             row_text.setString(std::to_string(i));
             row_text.setFont(font);
-            row_text.setCharacterSize(24);
+            row_text.setCharacterSize(12);
             row_text.setFillColor(sf::Color::White);
-            row_text.setPosition(0, i+20);
+            row_text.setPosition(0, i); 
 
             sf::Vertex line[] =
             {
-                sf::Vertex(sf::Vector2f(i, 0.f), sf::Color::Red),
-                sf::Vertex(sf::Vector2f(i, 600.f), sf::Color::Red)
+                sf::Vertex(sf::Vector2f(i, 0.f), sf::Color(194,194,204)),
+                sf::Vertex(sf::Vector2f(i, 600.f), sf::Color(194,194,204))
             };
 
             window.draw(line, 2, sf::Lines);
@@ -117,6 +119,8 @@ int main(){
         }
 
         window.display();
+
+        resize_grid(grid, 1000);
     }
 
     return 0;

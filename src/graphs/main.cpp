@@ -33,23 +33,6 @@ struct node{
    
 };
 
-
-//IF user wants to CREATE a node outside of bounds, resize grid to fit it
- /*
-void resize_grid(vector<vector<int>> &grid, int new_size) {
-
-   
-    vector<vector<int>> new_grid(new_size, vector<int>(new_size, 0));
-    for (int i = 0; i < grid.size(); i++) {
-        for (int j = 0; j < grid.size(); j++) {
-            new_grid[i][j] = grid[i][j];
-        }
-    }
-    grid = new_grid;
-   
-}
-*/
-
 void draw_grid(sf::RenderWindow& window, sf::Font font, int cols, int rows) {
     /* THE FOLLOWING CODE DRAWS GRID LINES AND NUMBERS AT THE TOP AND SIDES */
     for(int i = 0; i < 800; i+=50){
@@ -87,41 +70,36 @@ void draw_grid(sf::RenderWindow& window, sf::Font font, int cols, int rows) {
     /***************************************************************************/
 }
 
-void setup_nodes(sf::RenderWindow& window) {
-    
-}
+void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font font, int cols = 100, int rows = 100){
 
-int main(){
 
-    int cols = 100, rows = 100;
-    sf::RenderWindow window(sf::VideoMode(800,800), "Graphs");
+    //sdfsdfsdf
 
-    int cell_pixel_width = window.getSize().x / cols;
-    
-    vector<node> nodes;
-
-    sf::Font font;
-    font.loadFromFile("src/fonts/arial.ttf");
-
-    /*
-    node n;
-    n.circle_name.setFont(font);
-    n.circle_name.setString("A");
-    n.circle_name.setCharacterSize(24);
-    n.circle_name.setFillColor(sf::Color::White);
-    n.circle_name.setPosition(0, 0);
-
-    nodes.push_back(n);
-    */
 
     while(window.isOpen()){
 
-
-
         sf::Event event;
 
+        while(window.pollEvent(event)){
+            if(event.type == sf::Event::Closed){
+                window.close();
+            }
+        }
 
-        /* DRAW BOX (BOTTOM LEFT) WITH THE FOLLOWING 
+        window.clear();
+
+        draw_grid(window, font, cols, rows);
+
+        for(auto n : nodes){
+            window.draw(n.circle);
+            window.draw(n.circle_name);
+        }
+
+        window.display();
+
+    }
+
+    /* DRAW BOX (BOTTOM LEFT) WITH THE FOLLOWING 
         - ADD NODE OPTION 
         - REMOVE NODE 
         - ADD/REMOVE EDGE
@@ -179,37 +157,37 @@ int main(){
             }
         };
 */
-        while(window.pollEvent(event)){
-            if(event.type == sf::Event::Closed){
-                window.close();
-            }
+    
+}
 
-           // ok_button.check_button_events(window, event);
-         //  row_textfield.check_textfield_events(window, event);
-           // col_textfield.check_textfield_events(window, event);
+void choose_algorithm(){
+    //Do this later
+    //from here choose the graphinig algorithm to simulate 
+}
 
-        }
+void run_algorithm(){
+    //Do this later
+    //from here run the algorithm
+}
 
-        window.clear();
+void draw_setup(sf::RenderWindow& window, sf::RectangleShape box) {
+    window.draw(box);
 
-        draw_grid(window, font, cols, rows);
-        
+}
 
-        
-        window.draw(box);
-        //row_textfield.draw_textfield(window);
-      //  col_textfield.draw_textfield(window);
-      //  ok_button.draw_button(window);
+int main(){
 
+    int cols = 100, rows = 100;
+    sf::RenderWindow window(sf::VideoMode(800,800), "Graphs");
 
-        for(auto n : nodes){
-            window.draw(n.circle);
-            window.draw(n.circle_name);
-        }
+    vector<node> nodes; //important
 
-        window.display();
+    sf::Font font;
+    font.loadFromFile("src/fonts/arial.ttf");
 
-    }
+    setup_nodes(window, nodes, font);
+    choose_algorithm();
+    run_algorithm();
 
     return 0;
 }

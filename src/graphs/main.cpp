@@ -47,12 +47,6 @@ void resize_grid(vector<vector<int>> &grid, int new_size) {
 }
 */
 
-void resize_grid(int x, int y, int &cols, int &rows, int &cell_pixel_width){
-    cols = x;
-    rows = y;
-    cell_pixel_width = 600 / cols;
-}
-
 pair<int,int> grid_to_pixel(int x, int y){
     return {x*50, y*50};
 }
@@ -92,7 +86,7 @@ int main(){
 
         window.clear();
 
-        for(int i = 0; i < cols; i+=10){
+        for(int i = 0; i < 600; i+=50){
             sf::Text col_text;
             col_text.setString(std::to_string(i));
             col_text.setFont(font);
@@ -102,14 +96,14 @@ int main(){
 
             sf::Vertex line[] =
             {
-                sf::Vertex(sf::Vector2f(0.f, i),sf::Color(194,194,204)),
-                sf::Vertex(sf::Vector2f(600.f, i), sf::Color(194,194,204))
+                sf::Vertex(sf::Vector2f(0.f, i),sf::Color(100,100,100)),
+                sf::Vertex(sf::Vector2f(600.f, i), sf::Color(100,100,100))
             };
 
             window.draw(line, 2, sf::Lines);
             window.draw(col_text);
         }
-        for(int i = 0; i < rows; i+=10){
+        for(int i = 0; i < 600; i+=50){
             sf::Text row_text;
             row_text.setString(std::to_string(i));
             row_text.setFont(font);
@@ -119,8 +113,8 @@ int main(){
 
             sf::Vertex line[] =
             {
-                sf::Vertex(sf::Vector2f(i, 0.f), sf::Color(194,194,204)),
-                sf::Vertex(sf::Vector2f(i, 600.f), sf::Color(194,194,204))
+                sf::Vertex(sf::Vector2f(i, 0.f), sf::Color(100,100,100)),
+                sf::Vertex(sf::Vector2f(i, 600.f), sf::Color(100,100,100))
             };
 
             window.draw(line, 2, sf::Lines);
@@ -135,7 +129,6 @@ int main(){
 
         window.display();
 
-        resize_grid(500, 500, cols, rows, cell_pixel_width);
     }
 
     return 0;

@@ -1,0 +1,22 @@
+Idea:
+
+Bottom left box:
+
+ADD NODE
+Name: sdsdfsdf <- textfield 
+button: OK
+Enter coords 
+Sdfsdf sdfsdf button: OK
+
+Message box:
+- node already exists here
+- 
+
+REMOVE NODE
+Enter coords to remove
+Sdfsdf sdfsdfsdf button: OK
+Message box:
+- node does not exist at x, y
+
+CREATE/REMOVE CONNECTION
+Click two nodes 

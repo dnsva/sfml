@@ -38,7 +38,8 @@ struct textfield {
         
     }
 
-    void action(); //overriden in where it is implemented
+    //void textfield_action(); //overriden in where it is implemented
+    std::function<void()> textfield_action;
 
     void draw_textfield(sf::RenderWindow& window){
         window.draw(box);
@@ -48,6 +49,7 @@ struct textfield {
     void check_textfield_events(sf::RenderWindow& window, sf::Event& event){
         sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 
+        
         //highlight the box if hovering over
         if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
             box.setFillColor(box_highlight_color);
@@ -57,8 +59,10 @@ struct textfield {
             box.setOutlineColor(box_color);
         }
 
+        
+
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-            action();
+            textfield_action();
         }else if(event.type == sf::Event::TextEntered) {
             if (event.text.unicode == 8 && !curr_string.empty()) {
                 curr_string.pop_back();
@@ -68,6 +72,7 @@ struct textfield {
                 curr_text.setString(curr_string);
             }
         } 
+        
     }
 
     // Constructor with default values

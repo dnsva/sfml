@@ -39,7 +39,7 @@ struct button {
     }
 
     //void action(); //overriden in where it is implemented
-    std::function<void()> action;
+    std::function<void()> button_action;
 
     void draw_button(sf::RenderWindow& window){
         window.draw(box);
@@ -60,7 +60,7 @@ struct button {
 
         if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
             if(box.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))) {
-                action();
+                button_action();
             }
         }
     }

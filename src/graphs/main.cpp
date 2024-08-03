@@ -75,11 +75,78 @@ int main(){
 
     while(window.isOpen()){
 
+
+
         sf::Event event;
+
+
+        /* DRAW BOX (BOTTOM LEFT) WITH THE FOLLOWING 
+        - ADD NODE OPTION 
+        - REMOVE NODE 
+        - ADD/REMOVE EDGE
+        */
+
+       /* DRAW A BOX - BOTTOM LEFT */
+        sf::RectangleShape box(sf::Vector2f(300.f, 200.f));
+        box.setFillColor(sf::Color(100,100,100));
+        box.setPosition(0, 600);
+        
+
+        /* ADD NODE OPTION
+        row: [textfield]
+        col: [textfield]
+        [button: "OK"]
+
+        button action() - 
+            if rows and cols strings ARENT empty and are both NUMBERS
+            create new node at (row, col)
+            nodes.push_back(node)
+        */
+
+        textfield row_textfield(0, 600, 100, 50);
+        textfield col_textfield(100, 600, 100, 50);
+        button ok_button("OK", 200, 600, 100, 50);
+        
+
+        ok_button.button_action = [&](){
+            if(!row_textfield.curr_string.empty() && !col_textfield.curr_string.empty()){
+                bool is_number = true;
+                for(auto c : row_textfield.curr_string){
+                    if(!isdigit(c)){
+                        is_number = false;
+                        break;
+                    }
+                }
+                for(auto c : col_textfield.curr_string){
+                    if(!isdigit(c)){
+                        is_number = false;
+                        break;
+                    }
+                }
+                if(is_number){
+                    node n;
+                    n.x = stoi(col_textfield.curr_string);
+                    n.y = stoi(row_textfield.curr_string);
+                    n.circle.setPosition(n.x, n.y);
+                    n.circle_name.setFont(font);
+                    n.circle_name.setString("A"); //for now. also add textfield later for name 
+                    n.circle_name.setCharacterSize(24);
+                    n.circle_name.setFillColor(sf::Color::White);
+                    n.circle_name.setPosition(n.x, n.y);
+                    nodes.push_back(n);
+                }
+            }
+        };
+
         while(window.pollEvent(event)){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
+
+            ok_button.check_button_events(window, event);
+           row_textfield.check_textfield_events(window, event);
+           // col_textfield.check_textfield_events(window, event);
+
         }
 
         window.clear();
@@ -119,66 +186,12 @@ int main(){
         }
         /***************************************************************************/
 
-        /* DRAW BOX (BOTTOM LEFT) WITH THE FOLLOWING 
-        - ADD NODE OPTION 
-        - REMOVE NODE 
-        - ADD/REMOVE EDGE
-        */
+        
 
-       /* DRAW A BOX - BOTTOM LEFT */
-        sf::RectangleShape box(sf::Vector2f(300.f, 200.f));
-        box.setFillColor(sf::Color(100,100,100));
-        box.setPosition(0, 600);
         window.draw(box);
-
-        /* ADD NODE OPTION
-        row: [textfield]
-        col: [textfield]
-        [button: "OK"]
-
-        button action() - 
-            if rows and cols strings ARENT empty and are both NUMBERS
-            create new node at (row, col)
-            nodes.push_back(node)
-        */
-
-        textfield row_textfield(0, 600, 100, 50);
-        textfield col_textfield(100, 600, 100, 50);
-        button ok_button("OK", 200, 600, 100, 50);
-
         row_textfield.draw_textfield(window);
         col_textfield.draw_textfield(window);
         ok_button.draw_button(window);
-
-        ok_button.action = [&](){
-            if(!row_textfield.curr_string.empty() && !col_textfield.curr_string.empty()){
-                bool is_number = true;
-                for(auto c : row_textfield.curr_string){
-                    if(!isdigit(c)){
-                        is_number = false;
-                        break;
-                    }
-                }
-                for(auto c : col_textfield.curr_string){
-                    if(!isdigit(c)){
-                        is_number = false;
-                        break;
-                    }
-                }
-                if(is_number){
-                    node n;
-                    n.x = stoi(col_textfield.curr_string);
-                    n.y = stoi(row_textfield.curr_string);
-                    n.circle.setPosition(n.x, n.y);
-                    n.circle_name.setFont(font);
-                    n.circle_name.setString("A"); //for now. also add textfield later for name 
-                    n.circle_name.setCharacterSize(24);
-                    n.circle_name.setFillColor(sf::Color::White);
-                    n.circle_name.setPosition(n.x, n.y);
-                    nodes.push_back(n);
-                }
-            }
-        };
 
 
         for(auto n : nodes){

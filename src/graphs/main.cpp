@@ -32,7 +32,10 @@ struct node{
 
 
 //IF user wants to CREATE a node outside of bounds, resize grid to fit it
+ /*
 void resize_grid(vector<vector<int>> &grid, int new_size) {
+
+   
     vector<vector<int>> new_grid(new_size, vector<int>(new_size, 0));
     for (int i = 0; i < grid.size(); i++) {
         for (int j = 0; j < grid.size(); j++) {
@@ -40,6 +43,14 @@ void resize_grid(vector<vector<int>> &grid, int new_size) {
         }
     }
     grid = new_grid;
+   
+}
+*/
+
+void resize_grid(int x, int y, int &cols, int &rows, int &cell_pixel_width){
+    cols = x;
+    rows = y;
+    cell_pixel_width = 600 / cols;
 }
 
 pair<int,int> grid_to_pixel(int x, int y){
@@ -47,9 +58,13 @@ pair<int,int> grid_to_pixel(int x, int y){
 }
 
 int main(){
-    sf::RenderWindow window(sf::VideoMode(600, 600), "Graphs");
 
-    vector<vector<int>> grid(600, vector<int>(600, 0));
+    int cols = 100, rows = 100;
+    sf::RenderWindow window(sf::VideoMode(600,600), "Graphs");
+
+    int cell_pixel_width = window.getSize().x / cols;
+
+   // vector<vector<int>> grid(600, vector<int>(600, 0));
     
     vector<node> nodes;
 
@@ -77,7 +92,7 @@ int main(){
 
         window.clear();
 
-        for(int i = 0; i < 600; i+=50){
+        for(int i = 0; i < cols; i+=10){
             sf::Text col_text;
             col_text.setString(std::to_string(i));
             col_text.setFont(font);
@@ -94,7 +109,7 @@ int main(){
             window.draw(line, 2, sf::Lines);
             window.draw(col_text);
         }
-        for(int i = 0; i < 600; i+=50){
+        for(int i = 0; i < rows; i+=10){
             sf::Text row_text;
             row_text.setString(std::to_string(i));
             row_text.setFont(font);
@@ -120,7 +135,7 @@ int main(){
 
         window.display();
 
-        resize_grid(grid, 1000);
+        resize_grid(500, 500, cols, rows, cell_pixel_width);
     }
 
     return 0;

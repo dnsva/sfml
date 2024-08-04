@@ -134,12 +134,27 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     add_node_ok_text.setPosition(60,710);
 
 
-
     /* REMOVE NODE OPTION
         Title (centered): "Remove Node"
         Text: "Name: ", Box: (input), Text: (user input if box clicked)
         Button: "OK" (if clicked, remove node from graph)
     */
+    sf::Text remove_node_title = create_text(font, "Remove Node", 100, 740);
+    sf::Text remove_node_name = create_text(font, "Name: ", 10, 770);
+    //input box:
+    sf::RectangleShape remove_node_name_box(sf::Vector2f(100.f, 20.f));
+    remove_node_name_box.setFillColor(sf::Color::White);
+    remove_node_name_box.setPosition(60, 770);
+    string remove_node_name_input = "";
+    sf::Text remove_node_name_input_text = create_text(font, remove_node_name_input, 60, 770);
+    //ok button:
+    sf::RectangleShape remove_node_ok_button(sf::Vector2f(50.f, 20.f));
+    remove_node_ok_button.setFillColor(sf::Color::White);
+    remove_node_ok_button.setPosition(60, 790);
+    sf::Text remove_node_ok_text = create_text(font, "OK", 50.f, 20.f);
+    remove_node_ok_text.setFillColor(sf::Color::Black);
+    remove_node_ok_text.setPosition(60, 790);
+   
 
     /* ADD/REMOVE EDGE OPTION
         Title (centered): "Add/Remove Edge"
@@ -147,6 +162,28 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         Text: "Node 2: ", Box: (input), Text: (user input if box clicked)
         Button: "OK" (if clicked, add edge to graph if already doesnt exist, if it does exist, remove the edge
     */
+    // ADD/REMOVE EDGE OPTION
+    sf::Text add_remove_edge_title = create_text(font, "Add/Remove Edge", 100, 820);
+    sf::Text add_remove_edge_node1 = create_text(font, "Node 1: ", 10, 850);
+    sf::Text add_remove_edge_node2 = create_text(font, "Node 2: ", 10, 870);
+    // input boxes:
+    sf::RectangleShape add_remove_edge_node1_box(sf::Vector2f(100.f, 20.f));
+    add_remove_edge_node1_box.setFillColor(sf::Color::White);
+    add_remove_edge_node1_box.setPosition(60, 850);
+    string add_remove_edge_node1_input = "";
+    sf::Text add_remove_edge_node1_input_text = create_text(font, add_remove_edge_node1_input, 60, 850);
+    sf::RectangleShape add_remove_edge_node2_box(sf::Vector2f(100.f, 20.f));
+    add_remove_edge_node2_box.setFillColor(sf::Color::White);
+    add_remove_edge_node2_box.setPosition(60, 870);
+    string add_remove_edge_node2_input = "";
+    sf::Text add_remove_edge_node2_input_text = create_text(font, add_remove_edge_node2_input, 60, 870);
+    // ok button:
+    sf::RectangleShape add_remove_edge_ok_button(sf::Vector2f(50.f, 20.f));
+    add_remove_edge_ok_button.setFillColor(sf::Color::White);
+    add_remove_edge_ok_button.setPosition(60, 890);
+    sf::Text add_remove_edge_ok_text = create_text(font, "OK", 50.f, 20.f);
+    add_remove_edge_ok_text.setFillColor(sf::Color::Black);
+    add_remove_edge_ok_text.setPosition(60, 890);
 
 
     while(window.isOpen()){
@@ -164,6 +201,8 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
        // draw_grid(window, font, cols, rows);
 
         window.draw(box);
+
+        //ADD NODE OPTION DRAW ------------------
         window.draw(add_node_title);
         window.draw(add_node_name);
         window.draw(add_node_x);
@@ -176,8 +215,28 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         window.draw(y_input_text);
         window.draw(add_node_ok_button);
         window.draw(add_node_ok_text);
+        //---------------------------------------
 
-
+        //REMOVE NODE OPTION DRAW ------------------
+        window.draw(remove_node_title);
+        window.draw(remove_node_name);
+        window.draw(remove_node_name_box);
+        window.draw(remove_node_name_input_text);
+        window.draw(remove_node_ok_button);
+        window.draw(remove_node_ok_text);
+        //---------------------------------------
+        
+        //ADD/REMOVE EDGE OPTION DRAW ------------------
+        window.draw(add_remove_edge_title);
+        window.draw(add_remove_edge_node1);
+        window.draw(add_remove_edge_node2);
+        window.draw(add_remove_edge_node1_box);
+        window.draw(add_remove_edge_node1_input_text);
+        window.draw(add_remove_edge_node2_box);
+        window.draw(add_remove_edge_node2_input_text);
+        window.draw(add_remove_edge_ok_button);
+        window.draw(add_remove_edge_ok_text);
+        //---------------------------------------
 
 
      //   for(auto n : nodes){

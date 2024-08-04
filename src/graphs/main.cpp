@@ -185,6 +185,10 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     add_remove_edge_ok_text.setFillColor(sf::Color::Black);
     add_remove_edge_ok_text.setPosition(60, window.getSize().y - box.getSize().y + 290);
 
+    vector<sf::RectangleShape> input_boxes = {add_node_name_box, x_box, y_box, remove_node_name_box, add_remove_edge_node1_box, add_remove_edge_node2_box};
+    vector<string> input_texts = {add_node_name_input, x_input, y_input, remove_node_name_input, add_remove_edge_node1_input, add_remove_edge_node2_input};
+    vector<bool> active_box = {false, false, false, false, false, false};
+
 
     while(window.isOpen()){
 
@@ -193,6 +197,45 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         while(window.pollEvent(event)){
             if(event.type == sf::Event::Closed){
                 window.close();
+            }
+
+            //if mouse clicks a box in input_boxes, set active_box to true and anything else true to false EFFICIENTLY
+            if(event.type == sf::Event::MouseButtonPressed){
+                for(int i = 0; i < input_boxes.size(); i++){
+                    if(input_boxes[i].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                        for(int j = 0; j < active_box.size(); j++){
+                            active_box[j] = false;
+                        }
+                        active_box[i] = true;
+                    }
+                }
+            }
+
+            //if active_box is true, then input text
+            if(event.type == sf::Event::TextEntered){
+                for(int i = 0; i < active_box.size(); i++){
+                    if(active_box[i]){
+                        if(event.text.unicode == 8 && input_texts[i].size() > 0){ //backspace
+                            input_texts[i].pop_back();
+                        }else{
+                            input_texts[i] += event.text.unicode;
+                        }
+                        // Update the input text on the screen
+                        if(i == 0){
+                            add_node_name_input_text.setString(input_texts[i]);
+                        }else if(i == 1){
+                            x_input_text.setString(input_texts[i]);
+                        }else if(i == 2){
+                            y_input_text.setString(input_texts[i]);
+                        }else if(i == 3){
+                            remove_node_name_input_text.setString(input_texts[i]);
+                        }else if(i == 4){
+                            add_remove_edge_node1_input_text.setString(input_texts[i]);
+                        }else if(i == 5){
+                            add_remove_edge_node2_input_text.setString(input_texts[i]);
+                        }
+                    }
+                }
             }
         }
 

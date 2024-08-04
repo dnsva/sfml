@@ -86,9 +86,9 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     */
 
     /* DRAW A BOX - BOTTOM LEFT */
-        sf::RectangleShape box(sf::Vector2f(300.f, 200.f));
-        box.setFillColor(sf::Color(100,100,100));
-        box.setPosition(0, 600);
+    sf::RectangleShape box(sf::Vector2f(300.f, 350.f));
+    box.setFillColor(sf::Color(100,100,100));
+    box.setPosition(0, window.getSize().y - box.getSize().y);
 
     /* ADD NODE OPTION
         Title (centered): "Add Node"
@@ -97,41 +97,41 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         Text: "Y-Coord; ", Box: (input), Text: (user input if box clicked)
         Button: "OK" (if clicked, add node to graph)
     */
-    sf::Text add_node_title = create_text(font, "Add Node", 100, 620);
-    sf::Text add_node_name = create_text(font, "Name: ", 10, 650);
-    sf::Text add_node_x = create_text(font, "X-Coord: ", 10, 670);
-    sf::Text add_node_y = create_text(font, "Y-Coord: ", 10, 690);
+    sf::Text add_node_title = create_text(font, "Add Node", 100, window.getSize().y - box.getSize().y + 20);
+    sf::Text add_node_name = create_text(font, "Name: ", 10, window.getSize().y - box.getSize().y + 50);
+    sf::Text add_node_x = create_text(font, "X-Coord: ", 10, window.getSize().y - box.getSize().y + 70);
+    sf::Text add_node_y = create_text(font, "Y-Coord: ", 10, window.getSize().y - box.getSize().y + 90);
 
     //input boxes:
     sf::RectangleShape add_node_name_box(sf::Vector2f(100.f, 20.f));
     add_node_name_box.setFillColor(sf::Color::White);
-    add_node_name_box.setPosition(60, 650);
+    add_node_name_box.setPosition(60, window.getSize().y - box.getSize().y + 50);
 
     string add_node_name_input = "juhu";
-    sf::Text add_node_name_input_text = create_text(font, add_node_name_input, 60, 650);
+    sf::Text add_node_name_input_text = create_text(font, add_node_name_input, 60, window.getSize().y - box.getSize().y + 50);
 
     sf::RectangleShape x_box(sf::Vector2f(100.f, 20.f));
     x_box.setFillColor(sf::Color::White);
-    x_box.setPosition(60, 670);
+    x_box.setPosition(60, window.getSize().y - box.getSize().y + 70);
 
     string x_input = "ljlkjlkj";
-    sf::Text x_input_text = create_text(font, x_input, 60, 670);
+    sf::Text x_input_text = create_text(font, x_input, 60, window.getSize().y - box.getSize().y + 70);
 
     sf::RectangleShape y_box(sf::Vector2f(100.f, 20.f));
     y_box.setFillColor(sf::Color::White);
-    y_box.setPosition(60, 690);
+    y_box.setPosition(60, window.getSize().y - box.getSize().y + 90);
 
     string y_input = "kkk";
-    sf::Text y_input_text = create_text(font, y_input, 60, 690);
+    sf::Text y_input_text = create_text(font, y_input, 60, window.getSize().y - box.getSize().y + 90);
 
     //ok button:
     sf::RectangleShape add_node_ok_button(sf::Vector2f(50.f, 20.f));
     add_node_ok_button.setFillColor(sf::Color::White);
-    add_node_ok_button.setPosition(60, 710);
+    add_node_ok_button.setPosition(60, window.getSize().y - box.getSize().y + 110);
 
     sf::Text add_node_ok_text = create_text(font, "OK", 50.f, 20.f);
     add_node_ok_text.setFillColor(sf::Color::Black);
-    add_node_ok_text.setPosition(60,710);
+    add_node_ok_text.setPosition(60, window.getSize().y - box.getSize().y + 110);
 
 
     /* REMOVE NODE OPTION
@@ -139,22 +139,22 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         Text: "Name: ", Box: (input), Text: (user input if box clicked)
         Button: "OK" (if clicked, remove node from graph)
     */
-    sf::Text remove_node_title = create_text(font, "Remove Node", 100, 740);
-    sf::Text remove_node_name = create_text(font, "Name: ", 10, 770);
+    sf::Text remove_node_title = create_text(font, "Remove Node", 100, window.getSize().y - box.getSize().y + 140);
+    sf::Text remove_node_name = create_text(font, "Name: ", 10, window.getSize().y - box.getSize().y + 170);
     //input box:
     sf::RectangleShape remove_node_name_box(sf::Vector2f(100.f, 20.f));
     remove_node_name_box.setFillColor(sf::Color::White);
-    remove_node_name_box.setPosition(60, 770);
+    remove_node_name_box.setPosition(60, window.getSize().y - box.getSize().y + 170);
     string remove_node_name_input = "";
-    sf::Text remove_node_name_input_text = create_text(font, remove_node_name_input, 60, 770);
+    sf::Text remove_node_name_input_text = create_text(font, remove_node_name_input, 60, window.getSize().y - box.getSize().y + 170);
     //ok button:
     sf::RectangleShape remove_node_ok_button(sf::Vector2f(50.f, 20.f));
     remove_node_ok_button.setFillColor(sf::Color::White);
-    remove_node_ok_button.setPosition(60, 790);
+    remove_node_ok_button.setPosition(60, window.getSize().y - box.getSize().y + 190);
     sf::Text remove_node_ok_text = create_text(font, "OK", 50.f, 20.f);
     remove_node_ok_text.setFillColor(sf::Color::Black);
-    remove_node_ok_text.setPosition(60, 790);
-   
+    remove_node_ok_text.setPosition(60, window.getSize().y - box.getSize().y + 190);
+
 
     /* ADD/REMOVE EDGE OPTION
         Title (centered): "Add/Remove Edge"
@@ -163,27 +163,27 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         Button: "OK" (if clicked, add edge to graph if already doesnt exist, if it does exist, remove the edge
     */
     // ADD/REMOVE EDGE OPTION
-    sf::Text add_remove_edge_title = create_text(font, "Add/Remove Edge", 100, 820);
-    sf::Text add_remove_edge_node1 = create_text(font, "Node 1: ", 10, 850);
-    sf::Text add_remove_edge_node2 = create_text(font, "Node 2: ", 10, 870);
+    sf::Text add_remove_edge_title = create_text(font, "Add/Remove Edge", 100, window.getSize().y - box.getSize().y + 220);
+    sf::Text add_remove_edge_node1 = create_text(font, "Node 1: ", 10, window.getSize().y - box.getSize().y + 250);
+    sf::Text add_remove_edge_node2 = create_text(font, "Node 2: ", 10, window.getSize().y - box.getSize().y + 270);
     // input boxes:
     sf::RectangleShape add_remove_edge_node1_box(sf::Vector2f(100.f, 20.f));
     add_remove_edge_node1_box.setFillColor(sf::Color::White);
-    add_remove_edge_node1_box.setPosition(60, 850);
+    add_remove_edge_node1_box.setPosition(60, window.getSize().y - box.getSize().y + 250);
     string add_remove_edge_node1_input = "";
-    sf::Text add_remove_edge_node1_input_text = create_text(font, add_remove_edge_node1_input, 60, 850);
+    sf::Text add_remove_edge_node1_input_text = create_text(font, add_remove_edge_node1_input, 60, window.getSize().y - box.getSize().y + 250);
     sf::RectangleShape add_remove_edge_node2_box(sf::Vector2f(100.f, 20.f));
     add_remove_edge_node2_box.setFillColor(sf::Color::White);
-    add_remove_edge_node2_box.setPosition(60, 870);
+    add_remove_edge_node2_box.setPosition(60, window.getSize().y - box.getSize().y + 270);
     string add_remove_edge_node2_input = "";
-    sf::Text add_remove_edge_node2_input_text = create_text(font, add_remove_edge_node2_input, 60, 870);
+    sf::Text add_remove_edge_node2_input_text = create_text(font, add_remove_edge_node2_input, 60, window.getSize().y - box.getSize().y + 270);
     // ok button:
     sf::RectangleShape add_remove_edge_ok_button(sf::Vector2f(50.f, 20.f));
     add_remove_edge_ok_button.setFillColor(sf::Color::White);
-    add_remove_edge_ok_button.setPosition(60, 890);
+    add_remove_edge_ok_button.setPosition(60, window.getSize().y - box.getSize().y + 290);
     sf::Text add_remove_edge_ok_text = create_text(font, "OK", 50.f, 20.f);
     add_remove_edge_ok_text.setFillColor(sf::Color::Black);
-    add_remove_edge_ok_text.setPosition(60, 890);
+    add_remove_edge_ok_text.setPosition(60, window.getSize().y - box.getSize().y + 290);
 
 
     while(window.isOpen()){
@@ -198,7 +198,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
         window.clear();
 
-       // draw_grid(window, font, cols, rows);
+        draw_grid(window, font, cols, rows);
 
         window.draw(box);
 

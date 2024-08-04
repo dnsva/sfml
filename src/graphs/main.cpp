@@ -129,7 +129,9 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     add_node_ok_button.setFillColor(sf::Color::White);
     add_node_ok_button.setPosition(60, 710);
 
-    sf::Text add_node_ok_text = create_text(font, "OK", 50.f, 20.f)
+    sf::Text add_node_ok_text = create_text(font, "OK", 50.f, 20.f);
+    add_node_ok_text.setFillColor(sf::Color::Black);
+    add_node_ok_text.setPosition(60,710);
 
 
 
@@ -173,6 +175,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         window.draw(y_box);
         window.draw(y_input_text);
         window.draw(add_node_ok_button);
+        window.draw(add_node_ok_text);
 
 
 

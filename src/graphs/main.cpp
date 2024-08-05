@@ -107,21 +107,21 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     add_node_name_box.setFillColor(sf::Color::White);
     add_node_name_box.setPosition(60, window.getSize().y - box.getSize().y + 50);
 
-    string add_node_name_input = "juhu";
+    string add_node_name_input = "";
     sf::Text add_node_name_input_text = create_text(font, add_node_name_input, 60, window.getSize().y - box.getSize().y + 50);
 
     sf::RectangleShape x_box(sf::Vector2f(100.f, 20.f));
     x_box.setFillColor(sf::Color::White);
     x_box.setPosition(60, window.getSize().y - box.getSize().y + 70);
 
-    string x_input = "ljlkjlkj";
+    string x_input = "";
     sf::Text x_input_text = create_text(font, x_input, 60, window.getSize().y - box.getSize().y + 70);
 
     sf::RectangleShape y_box(sf::Vector2f(100.f, 20.f));
     y_box.setFillColor(sf::Color::White);
     y_box.setPosition(60, window.getSize().y - box.getSize().y + 90);
 
-    string y_input = "kkk";
+    string y_input = "";
     sf::Text y_input_text = create_text(font, y_input, 60, window.getSize().y - box.getSize().y + 90);
 
     //ok button:
@@ -198,8 +198,6 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
             if(event.type == sf::Event::Closed){
                 window.close();
             }
-
-            
             
             //if mouse clicks a box in input_boxes, set active_box to true and anything else true to false EFFICIENTLY
             if(event.type == sf::Event::MouseButtonPressed){
@@ -233,6 +231,25 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                         }
                     }
                 }
+
+                //if add_node_ok button pressed, add node to graph IF the coords are in bounds 800,800
+                if(add_node_ok_button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+
+                    x_input = input_texts[1];
+                    y_input = input_texts[2];
+                    add_node_name_input = input_texts[0];
+                    
+                    if(stoi(x_input) < 800 && stoi(y_input) < 800 && add_node_name_input.length() > 0){
+                        node n;
+                        n.name = add_node_name_input;
+                        n.x = stoi(x_input);
+                        n.y = stoi(y_input);
+                        n.circle.setPosition(n.x, n.y);
+                        n.circle_name = create_text(font, n.name, n.x, n.y);
+                        nodes.push_back(n);
+                    }
+                }
+
             }
 
             //if active_box is true, then input text
@@ -244,7 +261,16 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                         if(event.text.unicode == 8 && input_texts[i].size() > 0){ //backspace
                             input_texts[i].pop_back();
                         }else{
-                            input_texts[i] += event.text.unicode;
+
+                            //note - input can only be a number for i=1 and i=2
+                            if(i == 1 || i == 2){
+                                if(event.text.unicode >= 48 && event.text.unicode <= 57){
+                                    input_texts[i] += event.text.unicode;
+                                }
+                            }else{
+                                input_texts[i] += event.text.unicode; //just normal text
+                            }
+                            
                         }
                         // Update the input text on the screen
                         if(i == 0){
@@ -308,10 +334,10 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         //---------------------------------------
 
 
-     //   for(auto n : nodes){
-       //     window.draw(n.circle);
-         //   window.draw(n.circle_name);
-        //}
+        for(auto n : nodes){
+            window.draw(n.circle);
+            window.draw(n.circle_name);
+        }
 
         window.display();
 

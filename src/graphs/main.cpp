@@ -13,6 +13,15 @@ using namespace std;
 //Build:
 //./build/bin/main
 
+/*
+TO DO
+
+make sure no duplicate names or positions allowed
+
+
+allow directed edges 
+
+*/
 struct node{
     sf::CircleShape circle;
     sf::Text circle_name;
@@ -274,11 +283,11 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
                     if(add_remove_edge_node1_input.length() > 0 && add_remove_edge_node2_input.length() > 0 && (add_remove_edge_node1_input != add_remove_edge_node2_input)){
                         
-                        for(auto n : nodes){
-                            if(n.name == add_remove_edge_node1_input){
+                        for(auto& n : nodes){
+                            if(n.name.compare(add_remove_edge_node1_input) == 0){
                                 n1 = &n;
                             }
-                            if(n.name == add_remove_edge_node2_input){
+                            if(n.name.compare(add_remove_edge_node2_input) == 0){
                                 n2 = &n;
                             }
                         }
@@ -301,6 +310,21 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     if(!exists){
                         (*n1).edges.push_back(*n2);
                         (*n2).edges.push_back(*n1);
+                    }
+
+                    for(auto n : nodes){
+                        //window.draw(n.circle);
+                       // window.draw(n.circle_name);
+                        cout<<"curr node name: "<<n.name<<endl;
+                        for(auto e : n.edges){
+                            cout<<"edge name: "<<e.name<<endl;
+                           // sf::Vertex line[] = {
+                             //   sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),
+                            //    sf::Vertex(sf::Vector2f(e.x, e.y), sf::Color::White)
+                           // };
+                            //window.draw(line, 2, sf::Lines);
+                        }
+
                     }
 
                 }
@@ -392,8 +416,9 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         for(auto n : nodes){
             window.draw(n.circle);
             window.draw(n.circle_name);
-
+            //cout<<"curr node name: "<<n.name<<endl;
             for(auto e : n.edges){
+                //cout<<"edge name: "<<e.name<<endl;
                 sf::Vertex line[] = {
                     sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),
                     sf::Vertex(sf::Vector2f(e.x, e.y), sf::Color::White)

@@ -18,10 +18,13 @@ struct node{
     sf::Text circle_name;
 
     string name;
+    vector<node> edges;
     int x;
     int y;
 
     node(){
+        name = "";
+        edges = {};
         circle.setRadius(20.f);
         circle.setFillColor(sf::Color::Green);
         circle.setOutlineThickness(10.f);
@@ -262,6 +265,46 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     }
                 }
 
+                //if add_remove_edge_ok button pressed, add edge to graph IF the nodes exist. If an edge already exists, remove it
+                if(add_remove_edge_ok_button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                    add_remove_edge_node1_input = input_texts[4];
+                    add_remove_edge_node2_input = input_texts[5];
+
+                    node* n1, * n2;
+
+                    if(add_remove_edge_node1_input.length() > 0 && add_remove_edge_node2_input.length() > 0 && (add_remove_edge_node1_input != add_remove_edge_node2_input)){
+                        
+                        for(auto n : nodes){
+                            if(n.name == add_remove_edge_node1_input){
+                                n1 = &n;
+                            }
+                            if(n.name == add_remove_edge_node2_input){
+                                n2 = &n;
+                            }
+                        }
+
+                    }
+
+                    //if edges exist, remove them
+                    bool exists = false;
+                    for(int i = 0; i < (*n1).edges.size(); i++){
+                        if((*n1).edges[i].name == (*n2).name){
+                            exists = true;
+                            (*n1).edges.erase((*n1).edges.begin() + i);
+                        }
+                    }
+                    for(int i = 0; i < (*n2).edges.size(); i++){
+                        if((*n2).edges[i].name == (*n1).name){
+                            (*n2).edges.erase((*n2).edges.begin() + i);
+                        }
+                    }
+                    if(!exists){
+                        (*n1).edges.push_back(*n2);
+                        (*n2).edges.push_back(*n1);
+                    }
+
+                }
+
             }
 
             //if active_box is true, then input text
@@ -349,6 +392,15 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         for(auto n : nodes){
             window.draw(n.circle);
             window.draw(n.circle_name);
+
+            for(auto e : n.edges){
+                sf::Vertex line[] = {
+                    sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),
+                    sf::Vertex(sf::Vector2f(e.x, e.y), sf::Color::White)
+                };
+                window.draw(line, 2, sf::Lines);
+            }
+
         }
 
         window.display();
@@ -380,7 +432,6 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(800,800), "Graphs");
 
     vector<node> nodes; //important
-
     sf::Font font;
     font.loadFromFile("src/fonts/arial.ttf");
 

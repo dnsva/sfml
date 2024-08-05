@@ -15,10 +15,6 @@ using namespace std;
 
 /*
 TO DO
-
-make sure no duplicate names or positions allowed
-
-
 allow directed edges 
 
 */
@@ -252,13 +248,27 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     add_node_name_input = input_texts[0];
 
                     if(stoi(x_input) < 800 && stoi(y_input) < 800 && add_node_name_input.length() > 0){
-                        node n;
-                        n.name = add_node_name_input;
-                        n.x = stoi(x_input);
-                        n.y = stoi(y_input);
-                        n.circle.setPosition(n.x, n.y);
-                        n.circle_name = create_text(font, n.name, n.x, n.y);
-                        nodes.push_back(n);
+                        bool nameExists = false;
+                        bool positionTaken = false;
+                        for(auto& n : nodes){
+                            if(n.name == add_node_name_input){
+                                nameExists = true;
+                                break;
+                            }
+                            if(n.x == stoi(x_input) && n.y == stoi(y_input)){
+                                positionTaken = true;
+                                break;
+                            }
+                        }
+                        if(!nameExists && !positionTaken){
+                            node n;
+                            n.name = add_node_name_input;
+                            n.x = stoi(x_input);
+                            n.y = stoi(y_input);
+                            n.circle.setPosition(n.x, n.y);
+                            n.circle_name = create_text(font, n.name, n.x, n.y);
+                            nodes.push_back(n);
+                        }
                     }
                 }
 
@@ -414,8 +424,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
 
         for(auto n : nodes){
-            window.draw(n.circle);
-            window.draw(n.circle_name);
+            
             //cout<<"curr node name: "<<n.name<<endl;
             for(auto e : n.edges){
                 //cout<<"edge name: "<<e.name<<endl;
@@ -425,6 +434,9 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                 };
                 window.draw(line, 2, sf::Lines);
             }
+
+            window.draw(n.circle);
+            window.draw(n.circle_name);
 
         }
 

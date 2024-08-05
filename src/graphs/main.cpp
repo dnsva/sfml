@@ -199,14 +199,38 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                 window.close();
             }
 
+            
+            
             //if mouse clicks a box in input_boxes, set active_box to true and anything else true to false EFFICIENTLY
             if(event.type == sf::Event::MouseButtonPressed){
                 for(int i = 0; i < input_boxes.size(); i++){
                     if(input_boxes[i].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+
+                        add_node_name_box.setFillColor(sf::Color::White);
+                        x_box.setFillColor(sf::Color::White);
+                        y_box.setFillColor(sf::Color::White);
+                        remove_node_name_box.setFillColor(sf::Color::White);
+                        add_remove_edge_node1_box.setFillColor(sf::Color::White);
+                        add_remove_edge_node2_box.setFillColor(sf::Color::White);
+
                         for(int j = 0; j < active_box.size(); j++){
                             active_box[j] = false;
                         }
                         active_box[i] = true;
+                        //make it green
+                        if(i == 0 && active_box[i]){
+                            add_node_name_box.setFillColor(sf::Color::Green);
+                        }else if(i == 1 && active_box[i]){
+                            x_box.setFillColor(sf::Color::Green);
+                        }else if(i == 2 && active_box[i]){
+                            y_box.setFillColor(sf::Color::Green);
+                        }else if(i == 3 && active_box[i]){
+                            remove_node_name_box.setFillColor(sf::Color::Green);
+                        }else if(i == 4 && active_box[i]){
+                            add_remove_edge_node1_box.setFillColor(sf::Color::Green);
+                        }else if(i == 5 && active_box[i]){
+                            add_remove_edge_node2_box.setFillColor(sf::Color::Green);
+                        }
                     }
                 }
             }
@@ -214,7 +238,9 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
             //if active_box is true, then input text
             if(event.type == sf::Event::TextEntered){
                 for(int i = 0; i < active_box.size(); i++){
+
                     if(active_box[i]){
+                        
                         if(event.text.unicode == 8 && input_texts[i].size() > 0){ //backspace
                             input_texts[i].pop_back();
                         }else{

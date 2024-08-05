@@ -238,7 +238,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     x_input = input_texts[1];
                     y_input = input_texts[2];
                     add_node_name_input = input_texts[0];
-                    
+
                     if(stoi(x_input) < 800 && stoi(y_input) < 800 && add_node_name_input.length() > 0){
                         node n;
                         n.name = add_node_name_input;
@@ -247,6 +247,18 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                         n.circle.setPosition(n.x, n.y);
                         n.circle_name = create_text(font, n.name, n.x, n.y);
                         nodes.push_back(n);
+                    }
+                }
+
+                //if remove_node_ok button pressed, remove node from graph IF the string is in the graph
+                if(remove_node_ok_button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                    remove_node_name_input = input_texts[3];
+                    if(remove_node_name_input.length() > 0){
+                        for(int i = 0; i < nodes.size(); i++){
+                            if(nodes[i].name == remove_node_name_input){
+                                nodes.erase(nodes.begin() + i);
+                            }
+                        }
                     }
                 }
 

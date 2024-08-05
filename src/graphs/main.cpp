@@ -169,6 +169,11 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         Text: "Node 1: ", Box: (input), Text: (user input if box clicked)
         Text: "Node 2: ", Box: (input), Text: (user input if box clicked)
         Button: "OK" (if clicked, add edge to graph if already doesnt exist, if it does exist, remove the edge
+
+        Buttons on the right:
+        One button with double sided arrows
+        One button with a single sided arrow
+        One button with a single sided arrow in the opposite directoin of the previous button
     */
     // ADD/REMOVE EDGE OPTION
     sf::Text add_remove_edge_title = create_text(font, "Add/Remove Edge", 100, window.getSize().y - box.getSize().y + 220);
@@ -192,6 +197,57 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
     sf::Text add_remove_edge_ok_text = create_text(font, "OK", 50.f, 20.f);
     add_remove_edge_ok_text.setFillColor(sf::Color::Black);
     add_remove_edge_ok_text.setPosition(60, window.getSize().y - box.getSize().y + 290);
+
+    //Button double sided arrow
+    sf::Texture double_sided_arrow_png;
+    if(!double_sided_arrow_png.loadFromFile(("src/graphs/Arrow 1.png"))){
+        cout<<"Error loading image"<<endl;
+    }
+    sf::Sprite double_sided_arrow;
+    double_sided_arrow.setTexture(double_sided_arrow_png);
+    double_sided_arrow.setPosition(200, window.getSize().y - box.getSize().y + 250);
+
+    sf::RectangleShape double_sided_arrow_box(sf::Vector2f(15.f, 55.f));
+    double_sided_arrow_box.setFillColor(sf::Color::White);
+    double_sided_arrow_box.setOutlineThickness(1.f);
+    double_sided_arrow_box.setPosition(200, window.getSize().y - box.getSize().y + 250);
+    //----------------------------
+
+    //Button single sided arrow (no point up to point down)
+    sf::Texture single_sided_arrow_png;
+    if(!single_sided_arrow_png.loadFromFile(("src/graphs/Arrow 2.png"))){
+        cout<<"Error loading image"<<endl;
+    }
+    sf::Sprite single_sided_arrow;
+    single_sided_arrow.setTexture(single_sided_arrow_png);
+    single_sided_arrow.setPosition(230, window.getSize().y - box.getSize().y + 250);
+
+    sf::RectangleShape single_sided_arrow_box(sf::Vector2f(15.f, 55.f));
+    single_sided_arrow_box.setFillColor(sf::Color::White);
+    single_sided_arrow_box.setOutlineThickness(1.f);
+    single_sided_arrow_box.setPosition(230, window.getSize().y - box.getSize().y + 250);
+
+    //----------------------------
+
+    //Button single sided arrow (point up to point down)
+    sf::Texture single_sided_arrow_png2;
+    if(!single_sided_arrow_png2.loadFromFile(("src/graphs/Arrow 3.png"))){
+        cout<<"Error loading image"<<endl;
+    }
+    sf::Sprite single_sided_arrow2;
+    single_sided_arrow2.setTexture(single_sided_arrow_png2);
+    single_sided_arrow2.setPosition(260, window.getSize().y - box.getSize().y + 250);
+
+    sf::RectangleShape single_sided_arrow_box2(sf::Vector2f(15.f, 55.f));
+    single_sided_arrow_box2.setFillColor(sf::Color::White);
+    single_sided_arrow_box2.setOutlineThickness(1.f);
+    single_sided_arrow_box2.setPosition(260, window.getSize().y - box.getSize().y + 250);
+
+    //----------------------------
+
+
+
+  // double_sided_arrow.setPosition(200, window.getSize().y - box.getSize().y + 250);
 
     vector<sf::RectangleShape> input_boxes = {add_node_name_box, x_box, y_box, remove_node_name_box, add_remove_edge_node1_box, add_remove_edge_node2_box};
     vector<string> input_texts = {add_node_name_input, x_input, y_input, remove_node_name_input, add_remove_edge_node1_input, add_remove_edge_node2_input};
@@ -383,6 +439,8 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         window.clear();
 
         draw_grid(window, font, cols, rows);
+        //window.clear(sf::Color::White);
+        
 
         window.draw(box);
 
@@ -420,6 +478,18 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         window.draw(add_remove_edge_node2_input_text);
         window.draw(add_remove_edge_ok_button);
         window.draw(add_remove_edge_ok_text);
+
+        //draw double sided arrow
+        
+        window.draw(double_sided_arrow_box);
+        window.draw(double_sided_arrow);
+
+        window.draw(single_sided_arrow_box);
+        window.draw(single_sided_arrow);
+
+        window.draw(single_sided_arrow_box2);
+        window.draw(single_sided_arrow2);
+
         //---------------------------------------
 
 

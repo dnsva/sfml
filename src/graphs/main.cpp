@@ -669,29 +669,25 @@ int main(){
             sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
             sf::Vertex(sf::Vector2f(150, 150), sf::Color::White)
         };
-
-        // define a translation transform
-        sf::Transform translation;
-        translation.translate(20, 50);
-        
-        // define a rotation transform
-        sf::Transform rotation;
-        rotation.rotate(45);
-        
-        // combine them
-        sf::Transform transform = translation * rotation;
-        
-        // use the result to transform stuff...
-        sf::Vector2f point = transform.transformPoint(10, 20);
-        sf::FloatRect rect = transform.transformRect(sf::FloatRect(0, 0, 10, 100));
-
-
+        window.draw(arrow, 2, sf::Lines);
+  
         // draw the translated and rotated stuff
         sf::Vertex transformedArrow[] = {
-            sf::Vertex(transform.transformPoint(100,100), sf::Color::White),
-            sf::Vertex(transform.transformPoint(sf::Vector2f(150, 150)), sf::Color::White)
+            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
+            sf::Vertex(sf::Vector2f(100+10*cos(45), 100+10*sin(24)), sf::Color::White)
         };
         window.draw(transformedArrow, 2, sf::Lines);
+
+        /*
+
+        tan(theta) = x1-x0/y1-y0
+        theta = atan(x1-x0/y1-y0)
+
+        rotate amt = theta - 45 <- 45 can change depending on the angle of the arrow 
+
+        for other side of arrow, rotate by theta + 45
+        
+        */
 
         window.display();
     }

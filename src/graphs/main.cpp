@@ -532,19 +532,39 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
                 double x1 = n.x, y1 = n.y, x2 = e.x, y2 = e.y;
 
-                if(n.x-e.x > 0){
-                    x1 -= quantity_a;
-                    x2 += quantity_a;
-                }else if(n.x-e.x < 0){
-                    x1 += quantity_a;
-                    x2 -= quantity_a;
-                }
-                if(n.y-e.y > 0){
-                    y1 -= quantity_a;
-                    y2 += quantity_a;
-                }else if(n.y-e.y < 0){
-                    y1 += quantity_a;
-                    y2 -= quantity_a;
+                
+
+                if(n.x == e.x){
+                    if(n.y > e.y){
+                        y1 -= n.circle.getRadius();
+                        y2 += e.circle.getRadius();
+                    }else{
+                        y1 += n.circle.getRadius();
+                        y2 -= e.circle.getRadius();
+                    }
+                }else if(n.y == e.y){
+                    if(n.x > e.x){
+                        x1 -= n.circle.getRadius();
+                        x2 += e.circle.getRadius();
+                    }else{
+                        x1 += n.circle.getRadius();
+                        x2 -= e.circle.getRadius();
+                    }
+                }else{
+                    if(n.x-e.x > 0){
+                        x1 -= quantity_a;
+                        x2 += quantity_a;
+                    }else if(n.x-e.x < 0){
+                        x1 += quantity_a;
+                        x2 -= quantity_a;
+                    }
+                    if(n.y-e.y > 0){
+                        y1 -= quantity_a;
+                        y2 += quantity_a;
+                    }else if(n.y-e.y < 0){
+                        y1 += quantity_a;
+                        y2 -= quantity_a;
+                    }
                 }
 
                 /*

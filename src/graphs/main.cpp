@@ -530,8 +530,24 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
                 double quantity_a = n.circle.getRadius() / sqrt(2);
 
-                double x1, y1, x2, y2;
+                double x1 = n.x, y1 = n.y, x2 = e.x, y2 = e.y;
 
+                if(n.x-e.x > 0){
+                    x1 -= quantity_a;
+                    x2 += quantity_a;
+                }else if(n.x-e.x < 0){
+                    x1 += quantity_a;
+                    x2 -= quantity_a;
+                }
+                if(n.y-e.y > 0){
+                    y1 -= quantity_a;
+                    y2 += quantity_a;
+                }else if(n.y-e.y < 0){
+                    y1 += quantity_a;
+                    y2 -= quantity_a;
+                }
+
+                /*
                 if((n.x-e.x)>0&&(n.y-e.y)>0){
                     x1 = n.x - quantity_a;
                     y1 = n.y - quantity_a;
@@ -552,7 +568,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     y1 = n.y - quantity_a;
                     x2 = e.x - quantity_a;
                     y2 = e.y + quantity_a;
-                }
+                }*/
 
                 sf::Vertex line[] = {
                     //sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),

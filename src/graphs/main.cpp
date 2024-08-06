@@ -601,6 +601,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                 window.draw(line, 2, sf::Lines);
 
                 //draw an arrow (2 lines) at the end of the line going from n to e
+
                 
             }
 
@@ -642,7 +643,64 @@ int main(){
     sf::Font font;
     font.loadFromFile("src/fonts/arial.ttf");
 
-    setup_nodes(window, nodes, font);
+
+    //testing rotation to figure out how to draw arrows
+    while(window.isOpen()){
+        sf::Event event;
+
+        while(window.pollEvent(event)){
+            if(event.type == sf::Event::Closed){
+                window.close();
+            }
+        }
+
+        window.clear();
+
+       //line
+       /*
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
+            sf::Vertex(sf::Vector2f(200, 200), sf::Color::White)
+        };
+        window.draw(line, 2, sf::Lines);*/
+
+        //arrow
+        sf::Vertex arrow[] = {
+            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
+            sf::Vertex(sf::Vector2f(150, 150), sf::Color::White)
+        };
+
+        // define a translation transform
+        sf::Transform translation;
+        translation.translate(20, 50);
+        
+        // define a rotation transform
+        sf::Transform rotation;
+        rotation.rotate(45);
+        
+        // combine them
+        sf::Transform transform = translation * rotation;
+        
+        // use the result to transform stuff...
+        sf::Vector2f point = transform.transformPoint(10, 20);
+        sf::FloatRect rect = transform.transformRect(sf::FloatRect(0, 0, 10, 100));
+
+
+        // draw the translated and rotated stuff
+        sf::Vertex transformedArrow[] = {
+            sf::Vertex(transform.transformPoint(100,100), sf::Color::White),
+            sf::Vertex(transform.transformPoint(sf::Vector2f(150, 150)), sf::Color::White)
+        };
+        window.draw(transformedArrow, 2, sf::Lines);
+
+        window.display();
+    }
+
+
+
+
+
+  //UNCOMMENT THIS  setup_nodes(window, nodes, font);
   //  choose_algorithm();
     //run_algorithm();
 

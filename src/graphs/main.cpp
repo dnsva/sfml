@@ -17,6 +17,8 @@ using namespace std;
 TO DO
 allow directed edges 
 
+make text pos centered in circle (sub radius off x and y)
+
 */
 struct node{
     sf::CircleShape circle;
@@ -32,8 +34,8 @@ struct node{
         edges = {};
         circle.setRadius(20.f);
         circle.setFillColor(sf::Color::Green);
-        circle.setOutlineThickness(10.f);
-        circle.setOutlineColor(sf::Color::Red);
+      //  circle.setOutlineThickness(10.f); this is unecessary for now
+      //  circle.setOutlineColor(sf::Color::Red);
     }
    
 };
@@ -245,7 +247,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
 
     //----------------------------
 
-
+    int active_arrow = 1; //set 1 as default (double sided arrow)
 
   // double_sided_arrow.setPosition(200, window.getSize().y - box.getSize().y + 250);
 
@@ -296,6 +298,23 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     }
                 }
 
+                if(double_sided_arrow_box.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                    active_arrow = 1;
+                    double_sided_arrow_box.setFillColor(sf::Color::Green);
+                    single_sided_arrow_box.setFillColor(sf::Color::White);
+                    single_sided_arrow_box2.setFillColor(sf::Color::White);
+                }else if(single_sided_arrow_box.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                    active_arrow = 2;
+                    double_sided_arrow_box.setFillColor(sf::Color::White);
+                    single_sided_arrow_box.setFillColor(sf::Color::Green);
+                    single_sided_arrow_box2.setFillColor(sf::Color::White);
+                }else if(single_sided_arrow_box2.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+                    active_arrow = 3;
+                    double_sided_arrow_box.setFillColor(sf::Color::White);
+                    single_sided_arrow_box.setFillColor(sf::Color::White);
+                    single_sided_arrow_box2.setFillColor(sf::Color::Green);
+                }
+
                 //if add_node_ok button pressed, add node to graph IF the coords are in bounds 800,800
                 if(add_node_ok_button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
 
@@ -321,7 +340,7 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                             n.name = add_node_name_input;
                             n.x = stoi(x_input);
                             n.y = stoi(y_input);
-                            n.circle.setPosition(n.x, n.y);
+                            n.circle.setPosition(n.x - n.circle.getRadius(), n.y - n.circle.getRadius());
                             n.circle_name = create_text(font, n.name, n.x, n.y);
                             nodes.push_back(n);
                         }
@@ -370,12 +389,20 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     }
                     for(int i = 0; i < (*n2).edges.size(); i++){
                         if((*n2).edges[i].name == (*n1).name){
+                            exists = true;
                             (*n2).edges.erase((*n2).edges.begin() + i);
                         }
                     }
                     if(!exists){
-                        (*n1).edges.push_back(*n2);
-                        (*n2).edges.push_back(*n1);
+                        
+                        if(active_arrow == 1){
+                            (*n1).edges.push_back(*n2);
+                            (*n2).edges.push_back(*n1);
+                        }else if(active_arrow == 2){
+                            (*n1).edges.push_back(*n2);
+                        }else if(active_arrow == 3){
+                            (*n2).edges.push_back(*n1);
+                        }
                     }
 
                     for(auto n : nodes){
@@ -491,22 +518,59 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
         window.draw(single_sided_arrow2);
 
         //---------------------------------------
-
+        
 
         for(auto n : nodes){
-            
+            window.draw(n.circle);
+            window.draw(n.circle_name);
+
             //cout<<"curr node name: "<<n.name<<endl;
             for(auto e : n.edges){
                 //cout<<"edge name: "<<e.name<<endl;
+
+                double quantity_a = n.circle.getRadius() / sqrt(2);
+
+                double x1, y1, x2, y2;
+
+                if((n.x-e.x)>0&&(n.y-e.y)>0){
+                    x1 = n.x - quantity_a;
+                    y1 = n.y - quantity_a;
+                    x2 = e.x + quantity_a;
+                    y2 = e.y + quantity_a;
+                }else if((n.x-e.x)<0&&(n.y-e.y)<0){
+                    x1 = n.x + quantity_a;
+                    y1 = n.y + quantity_a;
+                    x2 = e.x - quantity_a;
+                    y2 = e.y - quantity_a;
+                }else if((n.x-e.x)>0&&(n.y-e.y)<0){
+                    x1 = n.x - quantity_a;
+                    y1 = n.y + quantity_a;
+                    x2 = e.x + quantity_a;
+                    y2 = e.y - quantity_a;
+                }else if((n.x-e.x)<0&&(n.y-e.y)>0){
+                    x1 = n.x + quantity_a;
+                    y1 = n.y - quantity_a;
+                    x2 = e.x - quantity_a;
+                    y2 = e.y + quantity_a;
+                }
+
                 sf::Vertex line[] = {
-                    sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),
-                    sf::Vertex(sf::Vector2f(e.x, e.y), sf::Color::White)
+                    //sf::Vertex(sf::Vector2f(n.x, n.y), sf::Color::White),
+                    //sf::Vertex(sf::Vector2f(e.x, e.y), sf::Color::White)
+
+                    sf::Vertex(sf::Vector2f(x1, y1), sf::Color::White),
+                    sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White)
+
                 };
                 window.draw(line, 2, sf::Lines);
+
+                //draw an arrow (2 lines) at the end of the line going from n to e
+                
             }
 
+            /*
             window.draw(n.circle);
-            window.draw(n.circle_name);
+            window.draw(n.circle_name);*/
 
         }
 

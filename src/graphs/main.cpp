@@ -83,7 +83,7 @@ sf::Text create_text(sf::Font& font, string text, int x, int y, int size = 12, s
     t.setFont(font);
     t.setCharacterSize(size);
     t.setFillColor(color);
-    t.setPosition(x, y);
+    t.setPosition(x, y); 
     return t;
 }
 
@@ -264,7 +264,23 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
             if(event.type == sf::Event::Closed){
                 window.close();
             }
-            
+
+            //Set default arrow direction to whichever is active
+            if(active_arrow == 1){
+                double_sided_arrow_box.setFillColor(sf::Color::Green);
+                single_sided_arrow_box.setFillColor(sf::Color::White);
+                single_sided_arrow_box2.setFillColor(sf::Color::White);
+            }else if(active_arrow == 2){
+                double_sided_arrow_box.setFillColor(sf::Color::White);
+                single_sided_arrow_box.setFillColor(sf::Color::Green);
+                single_sided_arrow_box2.setFillColor(sf::Color::White);
+            }else if(active_arrow == 3){
+                double_sided_arrow_box.setFillColor(sf::Color::White);
+                single_sided_arrow_box.setFillColor(sf::Color::White);
+                single_sided_arrow_box2.setFillColor(sf::Color::Green);
+            }
+
+
             //if mouse clicks a box in input_boxes, set active_box to true and anything else true to false EFFICIENTLY
             if(event.type == sf::Event::MouseButtonPressed){
                 for(int i = 0; i < input_boxes.size(); i++){
@@ -645,6 +661,8 @@ int main(){
 
 
     //testing rotation to figure out how to draw arrows
+    
+    /*
     while(window.isOpen()){
         sf::Event event;
 
@@ -657,12 +675,11 @@ int main(){
         window.clear();
 
        //line
-       /*
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
             sf::Vertex(sf::Vector2f(200, 200), sf::Color::White)
         };
-        window.draw(line, 2, sf::Lines);*/
+        window.draw(line, 2, sf::Lines);
 
         //arrow
         sf::Vertex arrow[] = {
@@ -677,26 +694,23 @@ int main(){
             sf::Vertex(sf::Vector2f(100+10*cos(45), 100+10*sin(24)), sf::Color::White)
         };
         window.draw(transformedArrow, 2, sf::Lines);
-
-        /*
-
-        tan(theta) = x1-x0/y1-y0
-        theta = atan(x1-x0/y1-y0)
-
-        rotate amt = theta - 45 <- 45 can change depending on the angle of the arrow 
-
-        for other side of arrow, rotate by theta + 45
         
-        */
 
-        window.display();
-    }
+       // tan(theta) = x1-x0/y1-y0
+       // theta = atan(x1-x0/y1-y0)
+
+       // rotate amt = theta - 45 <- 45 can change depending on the angle of the arrow 
+
+       // for other side of arrow, rotate by theta + 45      
+
+       // window.display();
+    }*/
+    
 
 
 
 
-
-  //UNCOMMENT THIS  setup_nodes(window, nodes, font);
+    setup_nodes(window, nodes, font);
   //  choose_algorithm();
     //run_algorithm();
 

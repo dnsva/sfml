@@ -40,6 +40,32 @@ struct node{
    
 };
 
+struct math_arrow{
+
+    double x1, x2, y1, y2, theta, l, bx, by, cx, cy;
+
+    //vector a is x1 x2 to y1 y2 
+
+    math_arrow(int x1, int y1, int x2, int y2){
+        this->x1 = x1;
+        this->y1 = y1;
+        this->x2 = x2;
+        this->y2 = y2;
+
+        theta = 45; //we define this
+        l = 50; //we define this
+
+        double vector_a_magnitude = sqrt(pow(x2-x1, 2) + pow(y2-y1, 2));
+
+        bx = (l/vector_a_magnitude)*(cos(theta)*(x1-x2) - sin(theta)*(y1-y2))+x2;
+        by = (l/vector_a_magnitude)*(sin(theta)*(x1-x2) + cos(theta)*(y1-y2))+y2;
+
+        cx = (l/vector_a_magnitude)*(cos(theta)*(x1-x2) + sin(theta)*(y1-y2))+x2;
+        cy = (l/vector_a_magnitude)*(-sin(theta)*(x1-x2) + cos(theta)*(y1-y2))+y2;
+    }
+
+};
+
 void draw_grid(sf::RenderWindow& window, sf::Font& font, int cols, int rows) {
     /* THE FOLLOWING CODE DRAWS GRID LINES AND NUMBERS AT THE TOP AND SIDES */
     for(int i = 0; i < 800; i+=50){
@@ -614,6 +640,25 @@ void setup_nodes(sf::RenderWindow& window, vector<node>& nodes, sf::Font& font, 
                     sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White)
 
                 };
+
+                math_arrow testing = math_arrow(x1, y1, x2, y2);
+
+                sf::Vertex arrow[] = {
+                sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White),
+                sf::Vertex(sf::Vector2f(testing.bx, testing.by), sf::Color::White)
+                };
+            
+                window.draw(arrow, 2, sf::Lines);
+
+                sf::Vertex arrow2[] = {
+                    sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White),
+                    sf::Vertex(sf::Vector2f(testing.cx, testing.cy), sf::Color::White)
+                };
+                
+                window.draw(arrow2, 2, sf::Lines);
+
+
+
                 window.draw(line, 2, sf::Lines);
 
                 //draw an arrow (2 lines) at the end of the line going from n to e
@@ -650,6 +695,8 @@ void draw_setup(sf::RenderWindow& window, sf::RectangleShape box) {
 
 }
 
+
+
 int main(){
 
     int cols = 100, rows = 100;
@@ -663,6 +710,7 @@ int main(){
     //testing rotation to figure out how to draw arrows
     
     /*
+    
     while(window.isOpen()){
         sf::Event event;
 
@@ -676,24 +724,29 @@ int main(){
 
        //line
         sf::Vertex line[] = {
-            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
-            sf::Vertex(sf::Vector2f(200, 200), sf::Color::White)
+            sf::Vertex(sf::Vector2f(200, 200), sf::Color::White),
+            sf::Vertex(sf::Vector2f(200, 100), sf::Color::White)
         };
         window.draw(line, 2, sf::Lines);
 
-        //arrow
+        int x1 = 200;
+        int y1 = 200;
+        int x2 = 200;
+        int y2 = 100;
+
+        math_arrow testing = math_arrow(x1, y1, x2, y2);
+
         sf::Vertex arrow[] = {
-            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
-            sf::Vertex(sf::Vector2f(150, 150), sf::Color::White)
+            sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White),
+            sf::Vertex(sf::Vector2f(testing.bx, testing.by), sf::Color::White)
         };
         window.draw(arrow, 2, sf::Lines);
-  
-        // draw the translated and rotated stuff
-        sf::Vertex transformedArrow[] = {
-            sf::Vertex(sf::Vector2f(100, 100), sf::Color::White),
-            sf::Vertex(sf::Vector2f(100+10*cos(45), 100+10*sin(24)), sf::Color::White)
+
+        sf::Vertex arrow2[] = {
+            sf::Vertex(sf::Vector2f(x2, y2), sf::Color::White),
+            sf::Vertex(sf::Vector2f(testing.cx, testing.cy), sf::Color::White)
         };
-        window.draw(transformedArrow, 2, sf::Lines);
+        window.draw(arrow2, 2, sf::Lines);
         
 
        // tan(theta) = x1-x0/y1-y0
@@ -703,10 +756,10 @@ int main(){
 
        // for other side of arrow, rotate by theta + 45      
 
-       // window.display();
-    }*/
+        window.display();
+    }
     
-
+*/
 
 
 

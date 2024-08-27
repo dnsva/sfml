@@ -10,9 +10,21 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/graphs/main.cpp)
-target_link_libraries(main PRIVATE sfml-graphics)
-target_compile_features(main PRIVATE cxx_std_17)
+add_executable(spiral src/ulam_spiral/main.cpp)
+add_executable(triangle src/sierpinski_triangle/main.cpp)
+add_executable(conway src/conway/main.cpp)
+
+#target_link_libraries(main PRIVATE sfml-graphics)
+#target_compile_features(main PRIVATE cxx_std_17)
+
+target_link_libraries(spiral PRIVATE sfml-graphics)
+target_compile_features(spiral PRIVATE cxx_std_17)
+
+target_link_libraries(triangle PRIVATE sfml-graphics)
+target_compile_features(triangle PRIVATE cxx_std_17)
+
+target_link_libraries(conway PRIVATE sfml-graphics)
+target_compile_features(conway PRIVATE cxx_std_17)
 
 if(WIN32)
     add_custom_command(

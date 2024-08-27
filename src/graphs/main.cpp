@@ -53,7 +53,7 @@ struct math_arrow{
         this->y2 = y2;
 
         theta = 45; //we define this
-        l = 50; //we define this
+        l = 20; //we define this
 
         double vector_a_magnitude = sqrt(pow(x2-x1, 2) + pow(y2-y1, 2));
 
